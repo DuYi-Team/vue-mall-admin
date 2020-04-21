@@ -20,43 +20,43 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      basePath: '/home',
+      basePath: "/home",
       routes: [
         {
-          path: 'index',
-          breadcrumbName: 'home'
+          path: "index",
+          breadcrumbName: "home"
         },
         {
-          path: 'first',
-          breadcrumbName: 'first',
+          path: "first",
+          breadcrumbName: "first",
           children: [
             {
-              path: '/general',
-              breadcrumbName: 'General'
+              path: "/general",
+              breadcrumbName: "General"
             },
             {
-              path: '/layout',
-              breadcrumbName: 'Layout'
+              path: "/layout",
+              breadcrumbName: "Layout"
             },
             {
-              path: '/navigation',
-              breadcrumbName: 'Navigation'
+              path: "/navigation",
+              breadcrumbName: "Navigation"
             }
           ]
         },
         {
-          path: 'second',
-          breadcrumbName: 'second'
+          path: "second",
+          breadcrumbName: "second"
         }
       ]
-    }
+    };
   },
   methods: {
-    toggleCollapsed () {
-      this.$store.dispatch('ToggleSideBar')
+    toggleCollapsed() {
+      this.$store.dispatch("ToggleSideBar");
     }
   }
-}
+};
 </script>

@@ -1,10 +1,10 @@
 <template>
-    <div class="app-wrapper">
-        <slider-nav />
-        <div class="app-main">
-            <nav-bar></nav-bar>
-        </div>
+  <div class="app-wrapper">
+    <slider-nav />
+    <div class="app-main">
+      <nav-bar></nav-bar>
     </div>
+  </div>
 </template>
 
 <script>
@@ -12,9 +12,7 @@ import sliderNav from './components/sliderNav/index.vue'
 import NavBar from './components/appMain/navBar.vue'
 export default {
   data () {
-    return {
-
-    }
+    return {}
   },
   components: {
     sliderNav,
