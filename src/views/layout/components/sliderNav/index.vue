@@ -1,13 +1,25 @@
 <template>
   <div class="slider-nav">
     <a-menu
-      :defaultSelectedKeys="['1']"
-      :defaultOpenKeys="['sub1']"
+      :defaultSelectedKeys="[ $store.state.routes[0].children[0].name]"
+      :defaultOpenKeys="[$store.state.routes[0].name]"
       mode="inline"
       theme="dark"
       :inlineCollapsed="$store.state.sliderBar.opened"
     >
-      <a-menu-item key="1">
+      <!-- <a-menu-item v-for="(route, index) in $store.state.routes" :key="index">
+        <a-icon :type="route.meta.icon"></a-icon>
+        <span v-bind:key="index">{{route.meta.title}}</span>
+      </a-menu-item> -->
+      <a-sub-menu v-for="(route) in $store.state.routes" :key="route.name">
+        <span slot="title">
+          <a-icon :type="route.meta.icon" />
+          <span>{{route.meta.title}}</span>
+        </span>
+        <a-menu-item v-for="(subRoute) in route.children" :key="subRoute.name">{{subRoute.meta.title}}</a-menu-item>
+
+      </a-sub-menu>
+      <!-- <a-menu-item key="1">
         <a-icon type="pie-chart" />
         <span>Option 1</span>
       </a-menu-item>
@@ -41,6 +53,7 @@
           <a-menu-item key="12">Option 12</a-menu-item>
         </a-sub-menu>
       </a-sub-menu>
+      -->
     </a-menu>
   </div>
 </template>

@@ -1,62 +1,34 @@
 <template>
   <div class="nav-bar">
-    <a-button
-      type="primary"
-      :class="[$store.state.sliderBar.opened ? 'expend-collapsed' : '', 'collapsed']"
-      @click="toggleCollapsed"
-    >
+    <a-button type="primary" class="collapsed" @click="toggleCollapsed">
       <a-icon :type="$store.state.sliderBar.opened ? 'menu-unfold' : 'menu-fold'" />
     </a-button>
     <!-- 面包屑 -->
     <a-breadcrumb :routes="routes">
-      <template slot="itemRender" slot-scope="{ route, params, routes, paths }">
-        <span v-if="routes.indexOf(route) === routes.length - 1">{{ route.breadcrumbName }}</span>
-        <router-link v-else :to="`${basePath}/${paths.join('/')}`">{{ route.breadcrumbName }}</router-link>
+      <template slot="itemRender" slot-scope="{ route }">
+        <!-- {{routes.indexOf(route)}}{{routes.length}} -->
+        <!-- {{route}} -->
+        <!-- <span v-if="routes.indexOf(route) === routes.length - 1">{{ route.meta.title }}</span> -->
+        <router-link
+          :to="{name: route.name, path: route.path ? route.path : '/home'}"
+        >{{ route.meta.title }}</router-link>
+        <!-- <router-link :to="`${paths}`">{{route.meta.title}}</router-link> -->
       </template>
     </a-breadcrumb>
-    <br />
-    {{ $route.path }}
   </div>
 </template>
 <script>
 export default {
-  data() {
-    return {
-      basePath: "/home",
-      routes: [
-        {
-          path: "index",
-          breadcrumbName: "home"
-        },
-        {
-          path: "first",
-          breadcrumbName: "first",
-          children: [
-            {
-              path: "/general",
-              breadcrumbName: "General"
-            },
-            {
-              path: "/layout",
-              breadcrumbName: "Layout"
-            },
-            {
-              path: "/navigation",
-              breadcrumbName: "Navigation"
-            }
-          ]
-        },
-        {
-          path: "second",
-          breadcrumbName: "second"
-        }
-      ]
-    };
+  data () {
+    return {}
   },
+  props: ['routes'],
+  watch: {},
+  computed: {},
   methods: {
-    toggleCollapsed() {
-      this.$store.dispatch("ToggleSideBar");
+    toggleCollapsed () {
+      this.$store.dispatch('ToggleSideBar')
     }
   }
-};
+}
 </script>

@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import { routes } from '../router/index'
 Vue.use(Vuex)
-
+console.log(routes)
 export default new Vuex.Store({
   state: {
     sliderBar: {
       opened: false
-    }
+    },
+    routes
   },
   mutations: {
     TOGGLE_SLIDERBAR (state) {

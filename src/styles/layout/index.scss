@@ -17,13 +17,16 @@
             transition-duration: 0.2s;
             transition-timing-function: ease;
             // 可展开的状态
-            &.expend-collapsed {
-                margin-left: -90px;
-            }
+            // &.expend-collapsed {
+            //     margin-left: -90px;
+            // }
         }
         .ant-breadcrumb {
             display: inline-block;
             margin-left: 20px;
         }
+    }
+    &.expend-collapsed {
+        margin-left: 80px;
     }
 }
