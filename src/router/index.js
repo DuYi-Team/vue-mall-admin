@@ -12,6 +12,7 @@ export const routes = [
     redirect: {
       path: '/home'
     },
+    name: 'index',
     meta: {
       title: '首页'
     },
@@ -19,6 +20,7 @@ export const routes = [
       {
         path: '/home',
         component: Home,
+        name: 'home',
         meta: {
           title: '首页',
           icon: 'desktop'
@@ -29,6 +31,7 @@ export const routes = [
   {
     path: '/goods',
     component: Layout,
+    name: 'goods',
     meta: {
       title: '商品',
       icon: 'inbox'
@@ -41,6 +44,14 @@ export const routes = [
         icon: 'desktop'
       },
       component: GoodsList
+    }, {
+      path: 'add',
+      name: 'goodsAdd',
+      meta: {
+        title: '新增商品',
+        icon: 'desktop'
+      },
+      component: () => import('@/views/goods/add.vue')
     }]
   }
 ]
