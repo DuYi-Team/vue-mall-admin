@@ -52,6 +52,14 @@ export const routes = [
         icon: 'desktop'
       },
       component: () => import('@/views/goods/add.vue')
+    }, {
+      path: 'tags',
+      name: 'goodsTags',
+      meta: {
+        title: '标签管理',
+        icon: 'desktop'
+      },
+      component: () => import('@/views/goods/tags.vue')
     }]
   }
 ]
