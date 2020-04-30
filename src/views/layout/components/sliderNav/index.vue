@@ -13,7 +13,9 @@
           <a-icon :type="route.meta.icon" />
           <span>{{route.meta.title}}</span>
         </span>
-        <a-menu-item v-for="(subRoute) in route.children" :key="subRoute.name">{{subRoute.meta.title}}</a-menu-item>
+        <a-menu-item v-for="(subRoute) in route.children" :key="subRoute.name">
+            <a-icon :type="subRoute.meta.icon" />
+          <span>{{subRoute.meta.title}}</span></a-menu-item>
       </a-sub-menu>
     </a-menu>
   </div>

@@ -14,7 +14,8 @@ export const routes = [
     },
     name: 'index',
     meta: {
-      title: '首页'
+      title: '首页',
+      icon: 'home'
     },
     children: [
       {
@@ -23,7 +24,7 @@ export const routes = [
         name: 'home',
         meta: {
           title: '首页',
-          icon: 'desktop'
+          icon: 'home'
         }
       }
     ]
@@ -41,7 +42,7 @@ export const routes = [
       name: 'goodsList',
       meta: {
         title: '商品列表',
-        icon: 'desktop'
+        icon: 'unordered-list'
       },
       component: GoodsList
     }, {
@@ -49,7 +50,7 @@ export const routes = [
       name: 'goodsAdd',
       meta: {
         title: '新增商品',
-        icon: 'desktop'
+        icon: 'file-add'
       },
       component: () => import('@/views/goods/add.vue')
     }, {
@@ -57,7 +58,7 @@ export const routes = [
       name: 'goodsTags',
       meta: {
         title: '标签管理',
-        icon: 'desktop'
+        icon: 'tags'
       },
       component: () => import('@/views/goods/tags.vue')
     }]

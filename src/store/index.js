@@ -4,6 +4,7 @@ import { routes } from '../router/index'
 Vue.use(Vuex)
 const currentRoute = []
 currentRoute.push(Object.assign({}, routes[0]), routes[0].children[0])
+console.log(routes)
 currentRoute[0].children = []
 export default new Vuex.Store({
   state: {

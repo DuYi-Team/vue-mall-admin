@@ -7,15 +7,6 @@
       <goods-detail v-show="current == 0" @next="next"/>
       <goods-sale-detail v-show="current == 1" @submit="submit" @prev="prev"/>
     </div>
-    <!-- <div class="steps-action">
-      <a-button v-if="current < steps.length - 1" type="primary" @click="next">下一步</a-button>
-      <a-button
-        v-if="current == steps.length - 1"
-        type="primary"
-        @click="$message.success('Processing complete!')"
-      >Done</a-button>
-      <a-button v-if="current > 0" style="margin-left: 8px" @click="prev">上一步</a-button>
-    </div> -->
   </div>
 </template>
 <script>
