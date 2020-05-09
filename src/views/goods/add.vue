@@ -12,6 +12,7 @@
 <script>
 import GoodsDetail from '@/components/goods/add/goodsDetail.vue'
 import GoodsSaleDetail from '@/components/goods/add/goodsSaleDetail.vue'
+import api from '@/api/products'
 export default {
   data () {
     return {
@@ -34,7 +35,6 @@ export default {
   methods: {
     next (data) {
       this.current++
-      console.log(data)
       this.form = Object.assign(this.form, data)
     },
     prev () {
@@ -42,7 +42,14 @@ export default {
     },
     submit (data) {
       this.form = Object.assign(this.form, data)
-      console.log(this.form)
+      api.addProduce(this.form).then((data) => {
+        if (data.data.status === 'success') {
+          alert('新增成功')
+          this.$router.push({
+            name: 'goodsList'
+          })
+        }
+      })
     }
   }
 }

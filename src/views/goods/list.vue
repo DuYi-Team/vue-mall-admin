@@ -4,14 +4,13 @@
     <select-form :form="selectionForm"></select-form>
     <a-table
       :columns="columns"
-      :row-key="record => record.login.uuid"
+      :row-key="record => record.id"
       :data-source="data"
       :pagination="pagination"
       :loading="loading"
       @change="handleTableChange"
 
     >
-      <template slot="name" slot-scope="name">{{ name.first }} {{ name.last }}</template>
       <template slot="operation" >
           <div>
              <a-button>编辑</a-button>
@@ -23,7 +22,7 @@
   </div>
 </template>
 <script>
-import reqwest from 'reqwest'
+import api from '@/api/products.js'
 import selectForm from '@/components/public/select.vue'
 export default {
   data () {
@@ -58,24 +57,26 @@ export default {
         }
       },
       data: [],
-      pagination: {},
+      pagination: {
+        current: 1,
+        pageSize: 20
+      },
       loading: false,
       columns: [
         {
           title: 'id',
-          dataIndex: 'name',
+          dataIndex: 'id',
           sorter: true,
-          width: '20%',
-          scopedSlots: { customRender: 'name' }
+          width: '20%'
         },
         {
           title: '标题',
-          dataIndex: 'gender',
+          dataIndex: 'title',
           width: '20%'
         },
         {
           title: '描述',
-          dataIndex: 'email'
+          dataIndex: 'desc'
         }, {
           title: '标签',
           dataIndex: 'tags'
@@ -97,6 +98,7 @@ export default {
           }]
         }, {
           title: '操作',
+          width: '20%',
           scopedSlots: { customRender: 'operation' }
         }
       ]
@@ -110,7 +112,6 @@ export default {
   },
   methods: {
     handleTableChange (pagination, filters, sorter) {
-      console.log(pagination)
       const pager = { ...this.pagination }
       pager.current = pagination.current
       this.pagination = pager
@@ -123,23 +124,15 @@ export default {
       })
     },
     fetch (params = {}) {
-      console.log('params:', params)
       this.loading = true
-      reqwest({
-        url: 'https://randomuser.me/api',
-        method: 'get',
-        data: {
-          results: 10,
-          ...params
-        },
-        type: 'json'
+      api.getProductsList({
+        page: this.pagination.current || 1,
+        size: this.pagination.pageSize || 10
       }).then(data => {
         const pagination = { ...this.pagination }
-        // Read total count from server
-        // pagination.total = data.totalCount;
-        pagination.total = 200
+        pagination.total = data.data.total
         this.loading = false
-        this.data = data.results
+        this.data = data.data.data
         this.pagination = pagination
       })
     }
