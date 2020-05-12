@@ -1,5 +1,5 @@
 <template>
     <div class="home">
-        home
+        home{{$store.state.user}}
     </div>
 </template>

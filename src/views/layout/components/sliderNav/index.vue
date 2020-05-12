@@ -1,21 +1,24 @@
 <template>
   <div class="slider-nav">
     <a-menu
-      :defaultSelectedKeys="[ $store.state.routes[0].children[0].name]"
-      :defaultOpenKeys="[$store.state.routes[0].name]"
+     :default-selected-keys="[routes[0] ? routes[0].children[0].name: '1']"
       mode="inline"
       theme="dark"
       :inlineCollapsed="$store.state.sliderBar.opened"
-      @click="clickMenu"
     >
-      <a-sub-menu v-for="(route) in $store.state.routes" :key="route.name">
-        <span slot="title">
-          <a-icon :type="route.meta.icon" />
-          <span>{{route.meta.title}}</span>
-        </span>
-        <a-menu-item v-for="(subRoute) in route.children" :key="subRoute.name">
-            <a-icon :type="subRoute.meta.icon" />
-          <span>{{subRoute.meta.title}}</span></a-menu-item>
+      <a-sub-menu v-for="(route) in routes" :key="route.name" >
+          <span slot="title">
+            <a-icon :type="route.meta.icon" />
+            <span>{{route.meta.title}}</span>
+          </span>
+
+            <a-menu-item v-for="(subRoute) in route.children" :key="subRoute.name">
+              <router-link :to="route.path + '/' + subRoute.path">
+              <a-icon :type="subRoute.meta.icon" />
+            <span>{{subRoute.meta.title}}</span>
+            </router-link>
+            </a-menu-item>
+
       </a-sub-menu>
     </a-menu>
   </div>
@@ -24,15 +27,19 @@
 <script>
 export default {
   data () {
-    return {}
+    return {
+      routes: this.$store.state.permission.routers.filter((v) => !v.hidden)
+    }
+  },
+  computed: {
+    // routes () {
+    //   const routes = this.$store.state.permission.routers.filter((v) => !v.hidden)
+    //   console.log(routes)
+    //   return routes
+    // }
   },
   methods: {
-    clickMenu (item, key, keyPath) {
-      this.$router.push({
-        name: item.key
-      })
-      this.$store.dispatch('SET_CURRENTROUTER', this.$router.currentRoute.matched)
-    }
+
   }
 }
 </script>

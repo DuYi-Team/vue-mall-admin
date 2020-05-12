@@ -29,4 +29,21 @@
     &.expend-collapsed {
         margin-left: 80px;
     }
+    .user-info {
+        float: right;
+        height: 50px;
+        line-height: 50px;
+        // overflow: hidden;
+        li {
+            list-style: none;
+            padding: 0 10px;
+            &.login-out-btn {
+                display: none;
+            }
+            
+        }
+        &:hover .login-out-btn {
+            display: block;
+        }
+    }
 }

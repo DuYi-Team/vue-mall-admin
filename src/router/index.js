@@ -3,9 +3,14 @@ import VueRouter from 'vue-router'
 import Layout from '../views/layout/index.vue'
 import GoodsList from '../views/goods/list.vue'
 import Home from '../views/home/index.vue'
+import Login from '@/views/login/index.vue'
 Vue.use(VueRouter)
-
-export const routes = [
+export const commonRouterMap = [
+  {
+    path: '/login',
+    component: Login,
+    hidden: true
+  },
   {
     path: '',
     component: Layout,
@@ -28,7 +33,9 @@ export const routes = [
         }
       }
     ]
-  },
+  }
+]
+export const asyncRouterMap = [
   {
     path: '/goods',
     component: Layout,
@@ -68,7 +75,7 @@ export const routes = [
 const router = new VueRouter({
   mode: 'hash',
   base: process.env.BASE_URL,
-  routes
+  routes: commonRouterMap
 })
 
 export default router

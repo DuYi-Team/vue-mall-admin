@@ -12,6 +12,15 @@
       </template>
 
     </a-breadcrumb>
+    <ul class="user-info">
+      <li class="username">
+        欢迎{{$store.state.user.name}}
+        <a-icon type="down" />
+      </li>
+      <li class="login-out-btn" @click="loginOut">
+        退出
+      </li>
+    </ul>
   </div>
 </template>
 <script>
@@ -33,6 +42,10 @@ export default {
     },
     changeRoutes () {
       this.routes = this.$router.currentRoute.matched
+    },
+    loginOut () {
+      this.$store.dispatch('LoginOut')
+      location.reload()
     }
   },
   mounted () {
