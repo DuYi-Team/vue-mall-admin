@@ -1,10 +1,8 @@
 import { asyncRouterMap, commonRouterMap } from '@/router/index'
 // 判断是否有权限访问该菜单
 function hasPermission (menus, route) {
-  console.log('permission', route.name)
   if (route.name) {
     const currMenu = getMenu(route.name, menus)
-    console.log('curMenu', currMenu)
     if (currMenu != null) {
       // 设置菜单的标题、图标和可见性
       if (currMenu.title != null && currMenu.title !== '') {

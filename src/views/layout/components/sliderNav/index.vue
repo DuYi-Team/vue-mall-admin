@@ -1,7 +1,8 @@
 <template>
   <div class="slider-nav">
     <a-menu
-     :default-selected-keys="[routes[0] ? routes[0].children[0].name: '1']"
+     :default-selected-keys="[$router.currentRoute.name]"
+     :default-open-keys="[$router.currentRoute.matched[0].name]"
       mode="inline"
       theme="dark"
       :inlineCollapsed="$store.state.sliderBar.opened"
@@ -13,7 +14,7 @@
           </span>
 
             <a-menu-item v-for="(subRoute) in route.children" :key="subRoute.name">
-              <router-link :to="route.path + '/' + subRoute.path">
+              <router-link :to="route.path ? route.path + '/' + subRoute.path : subRoute.path">
               <a-icon :type="subRoute.meta.icon" />
             <span>{{subRoute.meta.title}}</span>
             </router-link>

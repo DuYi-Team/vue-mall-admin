@@ -29,7 +29,6 @@ const user = {
     },
     getUserMenu ({ commit, state }) {
       const data = api.getUserMenu(state.name)
-      console.log(data)
       if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
         commit('SET_ROLES', data.roles)
       }

@@ -4,7 +4,7 @@
       <a-icon :type="$store.state.sliderBar.opened ? 'menu-unfold' : 'menu-fold'" />
     </a-button>
     <!-- 面包屑 -->
-    <a-breadcrumb :routes="$store.state.currentRoute">
+    <a-breadcrumb :routes="routes">
       <template slot="itemRender" slot-scope="{ route }">
         <router-link
           :to="{name: route.name, path: route.path ? route.path : '/home'}"
@@ -34,7 +34,11 @@ export default {
 
   },
   watch: {
-    $routes: 'changeRoutes'
+    $route: {
+      handler () {
+        this.changeRoutes()
+      }
+    }
   },
   methods: {
     toggleCollapsed () {
