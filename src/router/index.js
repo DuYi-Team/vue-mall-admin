@@ -68,6 +68,14 @@ export const asyncRouterMap = [
         icon: 'tags'
       },
       component: () => import('@/views/goods/tags.vue')
+    }, {
+      path: 'edit/:id',
+      name: 'goodsEdit',
+      meta: {
+        title: '编辑商品',
+        icon: 'file-edit'
+      },
+      component: () => import('@/views/goods/add.vue')
     }]
   }
 ]

@@ -1,8 +1,14 @@
 .goods-list {
+    position: relative;
     .select {
         padding:10px;
         .ant-form-item {
             min-width: 200px;
         }
+    }
+    .goods-add-btn {
+        position: absolute;
+        right: 10px;
+        top: 10px;
     }
 }

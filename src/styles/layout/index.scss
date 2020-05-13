@@ -37,6 +37,7 @@
         li {
             list-style: none;
             padding: 0 10px;
+            cursor: pointer;
             &.login-out-btn {
                 display: none;
             }
@@ -44,6 +45,10 @@
         }
         &:hover .login-out-btn {
             display: block;
+            cursor: pointer;
+            &:hover {
+                background-color: #eee;
+            }
         }
     }
 }

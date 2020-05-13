@@ -2,7 +2,7 @@
   <div class="goods-list">
     <!-- goods-list -->
     <select-form :form="selectionForm"></select-form>
-    <button class="goods-add-btn" @click="addGoods">新增商品</button>
+      <a-button  class="goods-add-btn" @click="addGoods">新增商品</a-button>
     <a-table
       :columns="columns"
       :row-key="record => record.id"
@@ -12,9 +12,9 @@
       @change="handleTableChange"
 
     >
-      <template slot="operation" >
+      <template slot="operation" slot-scope="record">
           <div>
-             <a-button>编辑</a-button>
+             <a-button @click="editGoods(record)">编辑</a-button>
                <a-button>删除</a-button>
           </div>
       </template>
@@ -139,6 +139,11 @@ export default {
     addGoods () {
       this.$router.push({
         path: '/goods/add'
+      })
+    },
+    editGoods (row) {
+      this.$router.push({
+        path: '/goods/edit/' + row.id
       })
     }
   }

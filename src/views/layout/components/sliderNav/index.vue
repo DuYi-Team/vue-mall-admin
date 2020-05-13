@@ -7,18 +7,19 @@
       theme="dark"
       :inlineCollapsed="$store.state.sliderBar.opened"
     >
-      <a-sub-menu v-for="(route) in routes" :key="route.name" >
-          <span slot="title">
-            <a-icon :type="route.meta.icon" />
-            <span>{{route.meta.title}}</span>
-          </span>
-
-            <a-menu-item v-for="(subRoute) in route.children" :key="subRoute.name">
-              <router-link :to="route.path ? route.path + '/' + subRoute.path : subRoute.path">
-              <a-icon :type="subRoute.meta.icon" />
-            <span>{{subRoute.meta.title}}</span>
+      <a-sub-menu v-for="(route) in routes" :key="route.name"  >
+        <span slot="title" v-if="!route.hidden">
+          <a-icon :type="route.meta.icon" />
+          <span>{{route.meta.title}}</span>
+        </span>
+        <template v-for="(subRoute) in route.children" >
+          <a-menu-item  v-if="!subRoute.hidden" :key="subRoute.name">
+            <router-link :to="route.path ? route.path + '/' + subRoute.path : subRoute.path">
+                <a-icon :type="subRoute.meta.icon" />
+              <span>{{subRoute.meta.title}}</span>
             </router-link>
-            </a-menu-item>
+          </a-menu-item>
+        </template>
 
       </a-sub-menu>
     </a-menu>
@@ -32,20 +33,7 @@ export default {
       routes: this.$store.state.permission.routers.filter((v) => !v.hidden)
     }
   },
-  watch: {
-    $route: {
-      handler () {
-        console.log(this.$router.currentRoute.matched[0].name, this.$router.currentRoute.name)
-      }
-    }
-  },
-  computed: {
-    // routes () {
-    //   const routes = this.$store.state.permission.routers.filter((v) => !v.hidden)
-    //   console.log(routes)
-    //   return routes
-    // }
-  },
+  computed: {},
   methods: {
 
   }

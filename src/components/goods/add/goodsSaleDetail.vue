@@ -1,7 +1,7 @@
 <template>
   <div class="goods-sale-detail">
     <a-form
-      :form="form"
+      :form="goodsForm"
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 12 }"
       @submit="handleSubmit"
@@ -54,7 +54,20 @@ export default {
     return {
       imageUrl: '',
       loading: false,
-      form: this.$form.createForm(this, { name: 'goodsSaleDetails' })
+      goodsForm: this.$form.createForm(this, { name: 'goodsSaleDetails' })
+    }
+  },
+  props: [
+    'form'
+  ],
+  watch: {
+    form () {
+      for (const prop in this.form) {
+        const obj = {}
+        obj[prop] = this.form[prop]
+        this.goodsForm.getFieldDecorator(prop, {})
+        this.goodsForm.setFieldsValue(obj)
+      }
     }
   },
   methods: {
@@ -62,32 +75,26 @@ export default {
       console.log(file)
     },
     handleChange (info) {
-      console.log('===', info, info.file.status)
       if (info.file.status === 'uploading') {
         this.loading = true
         return
       }
-      //   if (info.file.status === 'done') {
-      // Get this url from response in real world.
       getBase64(info.file.originFileObj, imageUrl => {
         this.imageUrl = imageUrl
         this.loading = false
       })
-    //   }
     },
     handleSubmit (e) {
       e.preventDefault()
 
-      this.form.validateFields((err, values) => {
+      this.goodsForm.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
           this.$emit('submit', values)
         }
       })
     },
     changeTags (value) {
-      console.log(value, this.form)
-      this.form.setFieldsValue({
+      this.goodsForm.setFieldsValue({
         tags: value
       })
     },

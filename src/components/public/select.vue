@@ -44,7 +44,6 @@ export default {
   props: ['form'],
   computed: {
     formData () {
-      console.log(this.form)
       return Object.assign({}, this.form)
     }
   },

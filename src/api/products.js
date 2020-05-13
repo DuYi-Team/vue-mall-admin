@@ -13,5 +13,14 @@ export default {
     return instance.post('/product/add', {
       params
     })
+  },
+  getProductDetail (params) {
+    const { id } = { params }
+    return instance.get('/products/' + id)
+  },
+  editProduct (params) {
+    return instance.put('/product/edit', {
+      params
+    })
   }
 }

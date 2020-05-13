@@ -39,6 +39,14 @@ export default {
           name: 'goodsTags',
           icon: 'tags',
           hidden: 0
+        }, {
+          id: 5,
+          parentId: 1,
+          title: '编辑商品',
+          level: 1,
+          name: 'goodsEdit',
+          icon: 'file-edit',
+          hidden: 1
         }
       ]
     }

@@ -4,8 +4,8 @@
       <a-step v-for="item in steps" :key="item.title" :title="item.title" />
     </a-steps>
     <div class="steps-content">
-      <goods-detail v-show="current == 0" @next="next"/>
-      <goods-sale-detail v-show="current == 1" @submit="submit" @prev="prev"/>
+      <goods-detail v-show="current == 0" :form="form" @next="next"/>
+      <goods-sale-detail v-show="current == 1" :form="form" @submit="submit" @prev="prev"/>
     </div>
   </div>
 </template>
@@ -32,6 +32,14 @@ export default {
     GoodsDetail,
     GoodsSaleDetail
   },
+  created () {
+    var params = this.$router.currentRoute.params
+    if (params && params.id) {
+      api.getProductDetail(params.id).then((res) => {
+        this.form = res.data
+      })
+    }
+  },
   methods: {
     next (data) {
       this.current++
@@ -42,14 +50,26 @@ export default {
     },
     submit (data) {
       this.form = Object.assign(this.form, data)
-      api.addProduce(this.form).then((data) => {
-        if (data.data.status === 'success') {
-          alert('新增成功')
-          this.$router.push({
-            name: 'goodsList'
-          })
-        }
-      })
+      var params = this.$router.currentRoute.params
+      if (params && params.id) {
+        api.editProduct(this.form).then((res) => {
+          if (res.data.status === 'success') {
+            this.$message.success('修改成功')
+            this.$router.push({
+              name: 'goodsList'
+            })
+          }
+        })
+      } else {
+        api.addProduce(this.form).then((res) => {
+          if (res.data.status === 'success') {
+            this.$message.success('新增成功')
+            this.$router.push({
+              name: 'goodsList'
+            })
+          }
+        })
+      }
     }
   }
 }
