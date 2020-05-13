@@ -2,6 +2,7 @@
   <div class="goods-list">
     <!-- goods-list -->
     <select-form :form="selectionForm"></select-form>
+    <button class="goods-add-btn" @click="addGoods">新增商品</button>
     <a-table
       :columns="columns"
       :row-key="record => record.id"
@@ -14,7 +15,6 @@
       <template slot="operation" >
           <div>
              <a-button>编辑</a-button>
-              <a-button>新增</a-button>
                <a-button>删除</a-button>
           </div>
       </template>
@@ -134,6 +134,11 @@ export default {
         this.loading = false
         this.data = data.data.data
         this.pagination = pagination
+      })
+    },
+    addGoods () {
+      this.$router.push({
+        path: '/goods/add'
       })
     }
   }

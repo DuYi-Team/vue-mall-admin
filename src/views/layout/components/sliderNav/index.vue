@@ -32,6 +32,13 @@ export default {
       routes: this.$store.state.permission.routers.filter((v) => !v.hidden)
     }
   },
+  watch: {
+    $route: {
+      handler () {
+        console.log(this.$router.currentRoute.matched[0].name, this.$router.currentRoute.name)
+      }
+    }
+  },
   computed: {
     // routes () {
     //   const routes = this.$store.state.permission.routers.filter((v) => !v.hidden)
