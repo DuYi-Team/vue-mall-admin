@@ -28,7 +28,7 @@ export const commonRouterMap = [
         component: Home,
         name: 'home',
         meta: {
-          title: '首页',
+          title: '统计',
           icon: 'home'
         }
       }

@@ -4,7 +4,7 @@ import store from './store'
 router.beforeEach((to, from, next) => {
   if (to.path !== '/login') {
     if (!store.state.user.name) {
-      next('/login')
+      return next('/login')
     }
     if (store.state.user.roles.length === 0) {
       store.dispatch('getUserMenu').then((res) => {

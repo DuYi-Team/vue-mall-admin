@@ -4,7 +4,9 @@ import router from './router'
 import store from './store'
 import './plugins/ant-design-vue.js'
 import '@/permission'
+import VCharts from 'v-charts'
 Vue.config.productionTip = false
+Vue.use(VCharts)
 
 new Vue({
   router,
