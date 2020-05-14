@@ -1,7 +1,7 @@
 <template>
   <div class="goods-list">
     <!-- goods-list -->
-    <select-form :form="selectionForm"></select-form>
+    <select-form :form="selectionForm" @search="fetch"></select-form>
       <a-button  class="goods-add-btn" @click="addGoods">新增商品</a-button>
     <a-table
       :columns="columns"
@@ -23,6 +23,7 @@
 </template>
 <script>
 import api from '@/api/products.js'
+import tagsApi from '@/api/tags.js'
 import selectForm from '@/components/public/select.vue'
 export default {
   data () {
@@ -109,6 +110,14 @@ export default {
   },
   created () {
     this.fetch()
+    tagsApi.getTagsList().then((res) => {
+      this.selectionForm.tags.options = res.data.data.map((item) => {
+        return {
+          id: item.id,
+          label: item.name
+        }
+      })
+    })
   },
   methods: {
     handleTableChange (pagination, filters, sorter) {
@@ -123,11 +132,12 @@ export default {
         ...filters
       })
     },
-    fetch (params = {}) {
+    fetch (params) {
       this.loading = true
       api.getProductsList({
         page: this.pagination.current || 1,
-        size: this.pagination.pageSize || 10
+        size: this.pagination.pageSize || 10,
+        ...params
       }).then(data => {
         const pagination = { ...this.pagination }
         pagination.total = data.data.total

@@ -13,5 +13,10 @@ export default {
     return instance.post('/tags/add', {
       params
     })
+  },
+  editTag (params) {
+    return instance.put('/tags/edit', {
+      params
+    })
   }
 }
