@@ -1,5 +1,5 @@
 <template>
-  <div class="goods-add">
+  <div class="goods-add" :key="goodsKey">
     <a-steps :current="current" class="goods-steps">
       <a-step v-for="item in steps" :key="item.title" :title="item.title" />
     </a-steps>
@@ -18,6 +18,7 @@ export default {
     return {
       current: 0,
       form: {},
+      goodsKey: 1,
       steps: [
         {
           title: '填写商品基本信息'
@@ -28,6 +29,11 @@ export default {
       ]
     }
   },
+  watch: {
+    $route () {
+      this.goodsKey = 1
+    }
+  },
   components: {
     GoodsDetail,
     GoodsSaleDetail
@@ -35,6 +41,7 @@ export default {
   created () {
     var params = this.$router.currentRoute.params
     if (params && params.id) {
+      this.goodsKey = params.id
       api.getProductDetail(params.id).then((res) => {
         this.form = res.data
       })

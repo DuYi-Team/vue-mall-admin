@@ -28,8 +28,7 @@
           placeholder="选择标签"
           @change="changeTags"
         >
-          <a-select-option value="male">male</a-select-option>
-          <a-select-option value="female">female</a-select-option>
+          <a-select-option v-for="tag in tags" :key="tag.id" :value="tag.id">{{tag.name}}</a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -39,9 +38,11 @@
   </div>
 </template>
 <script>
+import tagsApi from '@/api/tags'
 export default {
   data () {
     return {
+      tags: [],
       formLayout: 'horizontal',
       goodsForm: this.$form.createForm(this, { name: 'goodsDetails' })
     }
@@ -58,6 +59,12 @@ export default {
         this.goodsForm.setFieldsValue(obj)
       }
     }
+  },
+  created () {
+    tagsApi.getTagsList().then((res) => {
+      const data = res.data
+      this.tags = data.data
+    })
   },
   methods: {
     handleSubmit (e) {
