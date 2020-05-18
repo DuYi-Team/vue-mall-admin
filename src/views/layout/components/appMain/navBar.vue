@@ -6,7 +6,8 @@
     <!-- 面包屑 -->
     <a-breadcrumb :routes="routes">
       <template slot="itemRender" slot-scope="{ route }">
-        <router-link
+        <span v-if="!route.meta.isPage">{{ route.meta.title }}</span>
+        <router-link v-else
           :to="{name: route.name, path: route.path ? route.path : '/home'}"
         >{{ route.meta.title }}</router-link>
       </template>
