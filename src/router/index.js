@@ -20,7 +20,8 @@ export const commonRouterMap = [
     name: 'index',
     meta: {
       title: '首页',
-      icon: 'home'
+      icon: 'home',
+      isPage: false
     },
     children: [
       {
@@ -29,7 +30,8 @@ export const commonRouterMap = [
         name: 'home',
         meta: {
           title: '统计',
-          icon: 'home'
+          icon: 'home',
+          isPage: true
         }
       }
     ]
@@ -42,14 +44,16 @@ export const asyncRouterMap = [
     name: 'goods',
     meta: {
       title: '商品',
-      icon: 'inbox'
+      icon: 'inbox',
+      isPage: false
     },
     children: [{
       path: 'list',
       name: 'goodsList',
       meta: {
         title: '商品列表',
-        icon: 'unordered-list'
+        icon: 'unordered-list',
+        isPage: true
       },
       component: GoodsList
     }, {
@@ -57,7 +61,8 @@ export const asyncRouterMap = [
       name: 'goodsAdd',
       meta: {
         title: '新增商品',
-        icon: 'file-add'
+        icon: 'file-add',
+        isPage: true
       },
       component: () => import('@/views/goods/add.vue')
     }, {
@@ -65,7 +70,8 @@ export const asyncRouterMap = [
       name: 'goodsTags',
       meta: {
         title: '标签管理',
-        icon: 'tags'
+        icon: 'tags',
+        isPage: false
       },
       component: () => import('@/views/goods/tags.vue')
     }, {
@@ -73,7 +79,8 @@ export const asyncRouterMap = [
       name: 'goodsEdit',
       meta: {
         title: '编辑商品',
-        icon: 'file-edit'
+        icon: 'file-edit',
+        isPage: true
       },
       component: () => import('@/views/goods/add.vue')
     }]
