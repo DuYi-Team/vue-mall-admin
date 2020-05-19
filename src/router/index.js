@@ -12,7 +12,7 @@ export const commonRouterMap = [
     hidden: true
   },
   {
-    path: '',
+    path: '/',
     component: Layout,
     redirect: {
       path: '/home'

@@ -19,8 +19,6 @@ export default {
     return instance.get('/products/' + id)
   },
   editProduct (params) {
-    return instance.put('/product/edit', {
-      params
-    })
+    return instance.put('/product/edit', params)
   }
 }
