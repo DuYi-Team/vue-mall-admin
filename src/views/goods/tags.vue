@@ -49,7 +49,8 @@ export default {
       tagForm: this.$form.createForm(this, { name: 'tagForm' }),
       pagination: {
         current: 1,
-        pageSize: 20
+        pageSize: 10,
+        showSizeChanger: true
       },
       loading: false,
       columns: [
@@ -77,6 +78,7 @@ export default {
     handleTableChange (pagination, filters, sorter) {
       const pager = { ...this.pagination }
       pager.current = pagination.current
+      pager.pageSize = pagination.pageSize
       this.pagination = pager
       this.fetch({
         results: pagination.pageSize,
@@ -94,10 +96,15 @@ export default {
           size: this.pagination.pageSize || 10
         })
         .then(res => {
+          const data = res.data
+          console.log(data)
+          if (data.status !== 'success') {
+            return this.$message.error(data.msg)
+          }
           const pagination = { ...this.pagination }
-          pagination.total = res.data.total
+          pagination.total = data.data.total
           this.loading = false
-          this.data = res.data.data
+          this.data = data.data.data
           this.pagination = pagination
         })
     },

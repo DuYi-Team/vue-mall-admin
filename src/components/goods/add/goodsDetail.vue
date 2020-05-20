@@ -63,7 +63,7 @@ export default {
   created () {
     tagsApi.getTagsList().then((res) => {
       const data = res.data
-      this.tags = data.data
+      this.tags = data.data.data
     })
   },
   methods: {

@@ -7,13 +7,10 @@
       @submit="handleSubmit"
     >
       <a-form-item label="商品售价">
-        <a-input v-decorator="['sale_price', { rules: [{ required: true, message: '' }] }]" />
-      </a-form-item>
-      <a-form-item label="市场价">
-        <a-input v-decorator="['origin_price', { rules: [{ required: true, message: '' }] }]" />
+        <a-input v-decorator="['price', { rules: [{ required: true, message: ''}] }]" />
       </a-form-item>
       <a-form-item label="商品库存">
-        <a-input v-decorator="['inventory', { rules: [{ required: true, message: '' }] }]" />
+        <a-input v-decorator="['inventory', { rules: [{ required: true, message: ''}] }]" />
       </a-form-item>
       <a-form-item label="计量单位">
         <a-input v-decorator="['unit', { rules: [{ required: true, message: '' }] }]" />
@@ -88,7 +85,7 @@ export default {
 
       this.goodsForm.validateFields((err, values) => {
         if (!err) {
-          values.image = values.image.fileList
+          values.images = this.fileList
           this.$emit('submit', values)
         }
       })

@@ -65,7 +65,11 @@ export default {
             this.$router.push({
               name: 'goodsList'
             })
+          } else {
+            this.$message.error(res.data.errmsg)
           }
+        }).catch((error) => {
+          this.$message.error(error)
         })
       } else {
         api.addProduce(this.form).then((res) => {
@@ -74,7 +78,11 @@ export default {
             this.$router.push({
               name: 'goodsList'
             })
+          } else {
+            this.$message.error(res.data.errmsg)
           }
+        }).catch((error) => {
+          this.$message.error(error)
         })
       }
     }

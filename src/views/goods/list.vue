@@ -60,7 +60,8 @@ export default {
       data: [],
       pagination: {
         current: 1,
-        pageSize: 20
+        pageSize: 20,
+        showSizeChanger: true
       },
       loading: false,
       columns: [
@@ -80,7 +81,7 @@ export default {
           dataIndex: 'desc'
         }, {
           title: '标签',
-          dataIndex: 'tags'
+          dataIndex: 'tagsName'
         }, {
           title: '价格',
           dataIndex: 'price'
@@ -108,21 +109,23 @@ export default {
   components: {
     selectForm
   },
-  created () {
-    this.fetch()
-    tagsApi.getTagsList().then((res) => {
-      this.selectionForm.tags.options = res.data.data.map((item) => {
+  async created () {
+    await tagsApi.getTagsList().then((res) => {
+      const data = res.data.data
+      this.selectionForm.tags.options = data.data.map((item) => {
         return {
-          id: item.id,
+          ...item,
           label: item.name
         }
       })
     })
+    this.fetch()
   },
   methods: {
     handleTableChange (pagination, filters, sorter) {
       const pager = { ...this.pagination }
       pager.current = pagination.current
+      pager.pageSize = pagination.pageSize
       this.pagination = pager
       this.fetch({
         results: pagination.pageSize,
@@ -138,11 +141,26 @@ export default {
         page: this.pagination.current || 1,
         size: this.pagination.pageSize || 10,
         ...params
-      }).then(data => {
+      }).then(res => {
+        let data = res.data
+        if (data.status !== 'success') {
+          return this.$message.error(data.msg)
+        }
+        data = data.data
         const pagination = { ...this.pagination }
-        pagination.total = data.data.total
+        pagination.total = parseInt(data.total)
         this.loading = false
-        this.data = data.data.data
+        const tags = this.selectionForm.tags.options
+        this.data = data.data.map((item) => {
+          const tagsName = []
+          tags.forEach(tag => {
+            if (item.tags.indexOf(tag.id) > -1) {
+              tagsName.push(tag.name)
+            }
+          })
+          item.tagsName = tagsName.join()
+          return item
+        })
         this.pagination = pagination
       })
     },
