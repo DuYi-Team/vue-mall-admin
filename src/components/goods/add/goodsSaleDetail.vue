@@ -35,8 +35,8 @@
             <div class="ant-upload-text">Upload</div>
           </div>
         </a-upload>
-         <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-          <img alt="example" style="width: 100%" :src="previewImage" />
+         <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel" style="display:flex;justify-content: center;align-items:center;">
+          <img alt="example" :src="previewImage" style="margin: 20px"/>
         </a-modal>
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">

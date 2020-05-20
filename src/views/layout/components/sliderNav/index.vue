@@ -14,7 +14,7 @@
         </span>
         <template v-for="(subRoute) in route.children" >
           <a-menu-item  v-if="!subRoute.hidden" :key="subRoute.name">
-            <router-link :to="route.path ? route.path + '/' + subRoute.path : subRoute.path">
+            <router-link :to="(route.path && route.path != '/') ? route.path + '/' + subRoute.path : subRoute.path">
                 <a-icon :type="subRoute.meta.icon" />
               <span>{{subRoute.meta.title}}</span>
             </router-link>
