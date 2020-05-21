@@ -1,7 +1,7 @@
 <template>
   <div class="goods-list">
     <!-- goods-list -->
-    <select-form :form="selectionForm" @search="fetch"></select-form>
+    <select-form :form="selectionForm" @search="search"></select-form>
       <a-button  class="goods-add-btn" @click="addGoods">新增商品</a-button>
     <a-table
       :columns="columns"
@@ -12,6 +12,11 @@
       @change="handleTableChange"
 
     >
+      <template slot="status" slot-scope="record">
+        <div>
+          {{record ? '上架': '下架'}}
+        </div>
+      </template>
       <template slot="operation" slot-scope="record">
           <div>
              <a-button @click="editGoods(record)">编辑</a-button>
@@ -97,7 +102,8 @@ export default {
           }, {
             text: '下架',
             value: 2
-          }]
+          }],
+          scopedSlots: { customRender: 'status' }
         }, {
           title: '操作',
           width: '20%',
@@ -123,6 +129,7 @@ export default {
   },
   methods: {
     handleTableChange (pagination, filters, sorter) {
+      console.log(filters)
       const pager = { ...this.pagination }
       pager.current = pagination.current
       pager.pageSize = pagination.pageSize
@@ -130,17 +137,20 @@ export default {
       this.fetch({
         results: pagination.pageSize,
         page: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
         ...filters
       })
     },
-    fetch (params) {
+    search (val) {
+      console.log(this.selectionForm.searchWord.value, this.selectionForm.tags.value)
+      this.fetch()
+    },
+    fetch () {
       this.loading = true
       api.getProductsList({
         page: this.pagination.current || 1,
         size: this.pagination.pageSize || 10,
-        ...params
+        searchWord: this.selectionForm.searchWord.value,
+        tags: this.selectionForm.tags.value
       }).then(res => {
         let data = res.data
         if (data.status !== 'success') {
