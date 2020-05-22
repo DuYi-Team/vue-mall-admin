@@ -1,7 +1,5 @@
-import axios from 'axios'
-var instance = axios.create({
-  baseURL: 'https://mock.duyiedu.com/mock/16/vue-mall-admin'
-})
+import instance from '@/axios'
+
 export default {
   // 获取产品列表数据
   getProductsList (params) {
