@@ -15,5 +15,9 @@ export default {
     return instance.put('/tags/edit', {
       params
     })
+  },
+  deleteTag (params) {
+    const { id } = params
+    return instance.delete('/tags/' + id)
   }
 }

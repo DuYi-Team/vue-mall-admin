@@ -12,7 +12,7 @@
       <template slot="operation" slot-scope="record">
         <div>
           <a-button @click="editTag(record)">编辑</a-button>
-          <a-button>删除</a-button>
+          <a-button @click="deleteTag(record)">删除</a-button>
         </div>
       </template>
     </a-table>
@@ -149,6 +149,18 @@ export default {
       this.tagForm = this.$form.createForm(this, { name: 'tagForm' })
       this.tagsModel = true
       this.tagsMoadelTitle = '新增标签'
+    },
+    deleteTag (record) {
+      api.deleteTag({
+        id: record.id
+      }).then(res => {
+        if (res.data.status === 'success') {
+          this.$message.success('删除成功')
+          this.fetch()
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
     }
   }
 }

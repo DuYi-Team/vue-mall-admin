@@ -16,5 +16,9 @@ export default {
   },
   editProduct (params) {
     return instance.put('/product/edit', params)
+  },
+  removeProduct (params) {
+    const { id } = params
+    return instance.delete('/products/' + id)
   }
 }

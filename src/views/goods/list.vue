@@ -20,7 +20,7 @@
       <template slot="operation" slot-scope="record">
           <div>
              <a-button @click="editGoods(record)">编辑</a-button>
-               <a-button>删除</a-button>
+               <a-button @click="deleteGoods(record.id)">删除</a-button>
           </div>
       </template>
     </a-table>
@@ -46,20 +46,7 @@ export default {
           name: 'tags',
           value: undefined,
           type: 'select',
-          options: [
-            {
-              id: 1,
-              label: '水果'
-            },
-            {
-              id: 2,
-              label: '酒水'
-            },
-            {
-              id: 3,
-              label: '速食'
-            }
-          ]
+          options: []
         }
       },
       data: [],
@@ -182,6 +169,15 @@ export default {
     editGoods (row) {
       this.$router.push({
         path: '/goods/edit/' + row.id
+      })
+    },
+    deleteGoods (id) {
+      api.removeProduct({
+        id
+      }).then(res => {
+        if (res.data.status === 'success') {
+          this.fetch()
+        }
       })
     }
   }
