@@ -60,8 +60,7 @@ export default {
         {
           title: 'id',
           dataIndex: 'id',
-          sorter: true,
-          width: '20%'
+          sorter: true
         },
         {
           title: '标题',
