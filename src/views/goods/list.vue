@@ -82,13 +82,13 @@ export default {
         }, {
           title: '上架状态',
           dataIndex: 'status',
-          filters: [{
-            text: '上架',
-            value: 1
-          }, {
-            text: '下架',
-            value: 2
-          }],
+          // filters: [{
+          //   text: '上架',
+          //   value: 1
+          // }, {
+          //   text: '下架',
+          //   value: 2
+          // }],
           scopedSlots: { customRender: 'status' }
         }, {
           title: '操作',
