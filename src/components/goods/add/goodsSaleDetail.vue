@@ -21,7 +21,7 @@
           listType="picture-card"
           class="avatar-uploader"
           :file-list="fileList"
-          action="#api"
+          action="/upload/images"
           @preview="handlePreview"
           @change="handleChange"
           v-decorator="['image', { rules: [{ required: true, message: '' }] }]"
@@ -70,22 +70,37 @@ export default {
         obj[prop] = this.form[prop]
         this.goodsForm.getFieldDecorator(prop, {})
         this.goodsForm.setFieldsValue(obj)
-        if (prop === 'image') {
+        if (prop === 'images') {
           this.fileList = this.form[prop]
         }
       }
     }
   },
   methods: {
-    handleChange ({ fileList }) {
+    handleChange ({ file, fileList }) {
+      if (file.status !== 'uploading') {
+        console.log(file)
+      }
+      if (file.status === 'done') {
+        this.$message.success('上传成功')
+        file.url = file.response.data.url
+        file.thumbUrl = file.response.data.thumbUrl
+        this.fileList = fileList
+      }
       this.fileList = fileList
     },
     handleSubmit (e) {
       e.preventDefault()
-
       this.goodsForm.validateFields((err, values) => {
         if (!err) {
-          values.images = this.fileList
+          values.images = this.fileList.map((item, index) => {
+            return {
+              url: item.response ? item.response.data.url : item.url,
+              uid: index,
+              name: item.name,
+              status: item.response ? item.response.data.status : 'done'
+            }
+          })
           this.$emit('submit', values)
         }
       })
