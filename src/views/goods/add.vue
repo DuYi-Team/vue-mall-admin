@@ -43,7 +43,8 @@ export default {
     if (params && params.id) {
       this.goodsKey = params.id
       api.getProductDetail(params.id).then((res) => {
-        this.form = res.data
+        console.log(res.data)
+        this.form = res.data.data
       })
     }
   },

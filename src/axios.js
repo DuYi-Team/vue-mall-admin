@@ -1,6 +1,4 @@
 import axios from 'axios'
-var instance = axios.create({
-  baseURL: 'https://mock.duyiedu.com/mock/16/vue-mall-admin'
-})
+// var instance = axios.create('/api')
 
-export default instance
+export default axios

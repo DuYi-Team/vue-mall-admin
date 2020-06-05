@@ -78,7 +78,7 @@ export default {
           dataIndex: 'price'
         }, {
           title: '限制购买数量',
-          dataIndex: 'limit_num'
+          dataIndex: 'inventory'
         }, {
           title: '上架状态',
           dataIndex: 'status',
@@ -104,6 +104,7 @@ export default {
   async created () {
     await tagsApi.getTagsList().then((res) => {
       const data = res.data.data
+      console.log(data)
       this.selectionForm.tags.options = data.data.map((item) => {
         return {
           ...item,

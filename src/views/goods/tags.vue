@@ -24,7 +24,7 @@
         @submit="submitTags"
       >
         <a-form-item label="标签ID">
-          <a-input
+          <a-input :disabled="tagsMoadelTitle === '编辑标签'"
             v-decorator="['id', { rules: [{ required: true, message: 'Please input your note!' }] }]"
           />
         </a-form-item>
@@ -116,20 +116,20 @@ export default {
               if (res.data.status === 'success') {
                 this.$message.success('修改成功')
                 this.fetch()
+                this.tagsModel = false
               } else {
                 this.$message.error(res.data.msg)
               }
-              this.tagsModel = false
             })
           } else {
             api.addTag(values).then(res => {
               if (res.data.status === 'success') {
                 this.$message.success('新增成功')
                 this.fetch()
+                this.tagsModel = false
               } else {
                 this.$message.error(res.data.msg)
               }
-              this.tagsModel = false
             })
           }
         }
