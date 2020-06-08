@@ -24,7 +24,7 @@
           action="/upload/images"
           @preview="handlePreview"
           @change="handleChange"
-          v-decorator="['image', { rules: [{ required: true, message: '' }] }]"
+          v-decorator="['images', { rules: [{ required: true, message: '' }] }]"
         >
           <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
           <div v-else>
