@@ -97,8 +97,5 @@
       "vue-cli-service lint --fix",
       "git add"
     ]
-  },
-  "proxy": {
-    "/api": "http://localhost:3333/"
   }
 }

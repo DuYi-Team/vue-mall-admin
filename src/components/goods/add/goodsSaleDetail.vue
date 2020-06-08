@@ -21,7 +21,7 @@
           listType="picture-card"
           class="avatar-uploader"
           :file-list="fileList"
-          action="/upload/images"
+          action="http://mallapi.duyiedu.com:3333/upload/images"
           @preview="handlePreview"
           @change="handleChange"
           v-decorator="['images', { rules: [{ required: true, message: '' }] }]"

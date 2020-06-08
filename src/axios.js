@@ -1,4 +1,6 @@
 import axios from 'axios'
-// var instance = axios.create('/api')
+const instance = axios.create({
+  baseURL: 'http://mallapi.duyiedu.com:3333/'
+})
 
-export default axios
+export default instance

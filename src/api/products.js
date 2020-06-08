@@ -1,9 +1,7 @@
 import instance from '@/axios'
-
 export default {
   // 获取产品列表数据
   getProductsList (params) {
-    console.log('==')
     return instance.get('/products/all', {
       params
     })
