@@ -27,11 +27,12 @@
   </div>
 </template>
 <script>
-import api from '@/api/products.js'
-import tagsApi from '@/api/tags.js'
-import selectForm from '@/components/public/select.vue'
+import api from '@/api/products';
+import tagsApi from '@/api/tags';
+import selectForm from '@/components/public/select.vue';
+
 export default {
-  data () {
+  data() {
     return {
       selectionForm: {
         searchWord: {
@@ -39,149 +40,135 @@ export default {
           name: 'searchWord',
           value: '',
           type: 'input',
-          options: []
+          options: [],
         },
         tags: {
           label: '商品标签',
           name: 'tags',
           value: undefined,
           type: 'select',
-          options: []
-        }
+          options: [],
+        },
       },
       data: [],
       pagination: {
         current: 1,
         pageSize: 20,
-        showSizeChanger: true
+        showSizeChanger: true,
       },
       loading: false,
       columns: [
         {
           title: 'id',
           dataIndex: 'id',
-          sorter: true
+          sorter: true,
         },
         {
           title: '标题',
           dataIndex: 'title',
-          width: '20%'
+          width: '20%',
         },
         {
           title: '描述',
-          dataIndex: 'desc'
+          dataIndex: 'desc',
         }, {
           title: '标签',
-          dataIndex: 'tagsName'
+          dataIndex: 'tagsName',
         }, {
           title: '价格',
-          dataIndex: 'price'
+          dataIndex: 'price',
         }, {
           title: '限制购买数量',
-          dataIndex: 'inventory'
+          dataIndex: 'inventory',
         }, {
           title: '上架状态',
           dataIndex: 'status',
-          // filters: [{
-          //   text: '上架',
-          //   value: 1
-          // }, {
-          //   text: '下架',
-          //   value: 2
-          // }],
-          scopedSlots: { customRender: 'status' }
+          scopedSlots: { customRender: 'status' },
         }, {
           title: '操作',
           width: '20%',
-          scopedSlots: { customRender: 'operation' }
-        }
-      ]
-    }
+          scopedSlots: { customRender: 'operation' },
+        },
+      ],
+    };
   },
   components: {
-    selectForm
+    selectForm,
   },
-  async created () {
-    await tagsApi.getTagsList().then((res) => {
-      const data = res.data.data
-      console.log(data)
-      this.selectionForm.tags.options = data.data.map((item) => {
-        return {
-          ...item,
-          label: item.name
-        }
-      })
-    })
-    this.fetch()
+  async created() {
+    tagsApi.getTagsList().then((data) => {
+      this.selectionForm.tags.options = data.data.map((item) => ({
+        ...item,
+        label: item.name,
+      }));
+    });
+    this.fetch();
   },
   methods: {
-    handleTableChange (pagination, filters, sorter) {
-      console.log(filters)
-      const pager = { ...this.pagination }
-      pager.current = pagination.current
-      pager.pageSize = pagination.pageSize
-      this.pagination = pager
+    handleTableChange(pagination, filters) {
+      console.log(filters);
+      const pager = { ...this.pagination };
+      pager.current = pagination.current;
+      pager.pageSize = pagination.pageSize;
+      this.pagination = pager;
       this.fetch({
         results: pagination.pageSize,
         page: pagination.current,
-        ...filters
-      })
+        ...filters,
+      });
     },
-    search (val) {
-      console.log(this.selectionForm.searchWord.value, this.selectionForm.tags.value)
-      this.fetch()
+    search() {
+      console.log(this.selectionForm.searchWord.value, this.selectionForm.tags.value);
+      this.fetch();
     },
-    fetch () {
-      this.loading = true
+    fetch() {
+      this.loading = true;
       api.getProductsList({
         page: this.pagination.current || 1,
         size: this.pagination.pageSize || 10,
         searchWord: this.selectionForm.searchWord.value,
-        tags: this.selectionForm.tags.value
-      }).then(res => {
-        let data = res.data
-        if (data.status !== 'success') {
-          return this.$message.error(data.msg)
-        }
-        data = data.data
-        const pagination = { ...this.pagination }
-        pagination.total = parseInt(data.total)
-        this.loading = false
-        const tags = this.selectionForm.tags.options
+        tags: this.selectionForm.tags.value,
+      }).then((data) => {
+        console.log(data);
+        const pagination = { ...this.pagination };
+        pagination.total = parseInt(data.total);
+        const tags = this.selectionForm.tags.options;
         this.data = data.data.map((item) => {
-          const tagsName = []
-          tags.forEach(tag => {
+          const tagsName = [];
+          tags.forEach((tag) => {
             if (item.tags.indexOf(tag.id) > -1) {
-              tagsName.push(tag.name)
+              tagsName.push(tag.name);
             }
-          })
-          item.tagsName = tagsName.join()
-          return item
-        })
-        this.pagination = pagination
-      })
+          });
+          item.tagsName = tagsName.join();
+          return item;
+        });
+        this.pagination = pagination;
+      }).finally(() => {
+        this.loading = false;
+      });
     },
-    addGoods () {
+    addGoods() {
       this.$router.push({
-        path: '/goods/add'
-      })
+        path: '/goods/add',
+      });
     },
-    editGoods (row) {
+    editGoods(row) {
       this.$router.push({
-        path: '/goods/edit/' + row.id
-      })
+        path: `/goods/edit/${row.id}`,
+      });
     },
-    deleteGoods (id) {
+    deleteGoods(id) {
       api.removeProduct({
-        id
-      }).then(res => {
-        if (res.data.status === 'success') {
-          this.fetch()
-        }
-      })
-    }
-  }
-}
+        id,
+      }).then(() => {
+        // if (res.data.status === 'success') {
+        this.fetch();
+        // }
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" >

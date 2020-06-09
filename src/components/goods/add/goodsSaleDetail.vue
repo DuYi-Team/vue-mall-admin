@@ -21,7 +21,7 @@
           listType="picture-card"
           class="avatar-uploader"
           :file-list="fileList"
-          action="http://mallapi.duyiedu.com:3333/upload/images"
+          action="http://mallapi.duyiedu.com/upload/images"
           @preview="handlePreview"
           @change="handleChange"
           v-decorator="['images', { rules: [{ required: true, message: '' }] }]"
@@ -32,7 +32,10 @@
             <div class="ant-upload-text">Upload</div>
           </div>
         </a-upload>
-         <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel" style="display:flex;justify-content: center;align-items:center;">
+         <a-modal :visible="previewVisible"
+                  :footer="null"
+                  @cancel="handleCancel"
+                  style="display:flex;justify-content: center;align-items:center;">
           <img alt="example" :src="previewImage" style="margin: 20px"/>
         </a-modal>
       </a-form-item>
@@ -44,85 +47,83 @@
   </div>
 </template>
 <script>
-function getBase64 (img, callback) {
-  const reader = new FileReader()
-  reader.addEventListener('load', () => callback(reader.result))
-  reader.readAsDataURL(img)
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
 }
 export default {
-  data () {
+  data() {
     return {
       imageUrl: '',
       loading: false,
       previewVisible: false,
       fileList: [],
       previewImage: '',
-      goodsForm: this.$form.createForm(this, { name: 'goodsSaleDetails' })
-    }
+      goodsForm: this.$form.createForm(this, { name: 'goodsSaleDetails' }),
+    };
   },
   props: [
-    'form'
+    'form',
   ],
   watch: {
-    form () {
-      for (const prop in this.form) {
-        const obj = {}
-        obj[prop] = this.form[prop]
-        this.goodsForm.getFieldDecorator(prop, {})
-        this.goodsForm.setFieldsValue(obj)
-        if (prop === 'images') {
-          this.fileList = this.form[prop]
+    form() {
+      for (const [key, value] of Object.entries(this.form)) {
+        const obj = {};
+        obj[key] = value;
+        this.goodsForm.getFieldDecorator(key, {});
+        this.goodsForm.setFieldsValue(obj);
+        if (key === 'images') {
+          this.fileList = value;
         }
       }
-    }
+    },
   },
   methods: {
-    handleChange ({ file, fileList }) {
+    handleChange({ file, fileList }) {
       if (file.status !== 'uploading') {
-        console.log(file)
+        console.log(file);
       }
       if (file.status === 'done') {
-        this.$message.success('上传成功')
-        file.url = file.response.data.url
-        file.thumbUrl = file.response.data.thumbUrl
-        this.fileList = fileList
+        this.$message.success('上传成功');
+        file.url = file.response.data.url;
+        file.thumbUrl = file.response.data.thumbUrl;
+        this.fileList = fileList;
       }
-      this.fileList = fileList
+      this.fileList = fileList;
     },
-    handleSubmit (e) {
-      e.preventDefault()
+    handleSubmit(e) {
+      e.preventDefault();
       this.goodsForm.validateFields((err, values) => {
         if (!err) {
-          values.images = this.fileList.map((item, index) => {
-            return {
-              url: item.response ? item.response.data.url : item.url,
-              uid: index,
-              name: item.name,
-              status: item.response ? item.response.data.status : 'done'
-            }
-          })
-          this.$emit('submit', values)
+          values.images = this.fileList.map((item, index) => ({
+            url: item.response ? item.response.data.url : item.url,
+            uid: index,
+            name: item.name,
+            status: item.response ? item.response.data.status : 'done',
+          }));
+          this.$emit('submit', values);
         }
-      })
+      });
     },
-    changeTags (value) {
+    changeTags(value) {
       this.goodsForm.setFieldsValue({
-        tags: value
-      })
+        tags: value,
+      });
     },
-    prev () {
-      this.$emit('prev')
+    prev() {
+      this.$emit('prev');
     },
-    async handlePreview (file) {
+    async handlePreview(file) {
       if (!file.url && !file.preview) {
-        file.preview = await getBase64(file.originFileObj)
+        file.preview = await getBase64(file.originFileObj);
       }
-      this.previewImage = file.url || file.preview
-      this.previewVisible = true
+      this.previewImage = file.url || file.preview;
+      this.previewVisible = true;
     },
-    handleCancel () {
-      this.previewVisible = false
-    }
-  }
-}
+    handleCancel() {
+      this.previewVisible = false;
+    },
+  },
+};
 </script>

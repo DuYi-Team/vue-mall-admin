@@ -1,19 +1,20 @@
-import instance from '@/axios'
+import instance from '@/axios';
+
 export default {
   // 获取产品列表数据
-  getTagsList (params) {
+  getTagsList(params) {
     return instance.get('/tags/all', {
-      params
-    })
+      params,
+    });
   },
-  addTag (params) {
-    return instance.post('/tags/add', params)
+  addTag(params) {
+    return instance.post('/tags/add', params);
   },
-  editTag (params) {
-    return instance.put('/tags/edit', params)
+  editTag(params) {
+    return instance.put('/tags/edit', params);
   },
-  deleteTag (params) {
-    const { id } = params
-    return instance.delete('/tags/' + id)
-  }
-}
+  deleteTag(params) {
+    const { id } = params;
+    return instance.delete(`/tags/${id}`);
+  },
+};

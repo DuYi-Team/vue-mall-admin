@@ -26,35 +26,35 @@
 </template>
 <script>
 export default {
-  data () {
+  data() {
     return {
-      routes: []
-    }
+      routes: [],
+    };
   },
   computed: {
 
   },
   watch: {
     $route: {
-      handler () {
-        this.changeRoutes()
-      }
-    }
+      handler() {
+        this.changeRoutes();
+      },
+    },
   },
   methods: {
-    toggleCollapsed () {
-      this.$store.dispatch('ToggleSideBar')
+    toggleCollapsed() {
+      this.$store.dispatch('toggleSideBar');
     },
-    changeRoutes () {
-      this.routes = this.$router.currentRoute.matched
+    changeRoutes() {
+      this.routes = this.$router.currentRoute.matched;
     },
-    loginOut () {
-      this.$store.dispatch('LoginOut')
-      location.reload()
-    }
+    loginOut() {
+      this.$store.dispatch('loginOut');
+      location.reload();
+    },
   },
-  mounted () {
-    this.routes = this.$router.currentRoute.matched
-  }
-}
+  mounted() {
+    this.routes = this.$router.currentRoute.matched;
+  },
+};
 </script>

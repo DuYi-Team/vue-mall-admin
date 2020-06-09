@@ -28,7 +28,9 @@
           placeholder="选择标签"
           @change="changeTags"
         >
-          <a-select-option v-for="tag in tags" :key="tag.id" :value="tag.id">{{tag.name}}</a-select-option>
+          <a-select-option v-for="tag in tags" :key="tag.id" :value="tag.id">
+            {{tag.name}}
+          </a-select-option>
         </a-select>
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -38,48 +40,48 @@
   </div>
 </template>
 <script>
-import tagsApi from '@/api/tags'
+import tagsApi from '@/api/tags';
+
 export default {
-  data () {
+  data() {
     return {
       tags: [],
       formLayout: 'horizontal',
-      goodsForm: this.$form.createForm(this, { name: 'goodsDetails' })
-    }
+      goodsForm: this.$form.createForm(this, { name: 'goodsDetails' }),
+    };
   },
   props: [
-    'form'
+    'form',
   ],
   watch: {
-    form () {
-      for (const prop in this.form) {
-        const obj = {}
-        obj[prop] = this.form[prop]
-        this.goodsForm.getFieldDecorator(prop, {})
-        this.goodsForm.setFieldsValue(obj)
+    form() {
+      for (const [key, value] of Object.entries(this.form)) {
+        const obj = {};
+        obj[key] = value;
+        this.goodsForm.getFieldDecorator(key, {});
+        this.goodsForm.setFieldsValue(obj);
       }
-    }
+    },
   },
-  created () {
-    tagsApi.getTagsList().then((res) => {
-      const data = res.data
-      this.tags = data.data.data
-    })
+  created() {
+    tagsApi.getTagsList().then((data) => {
+      this.tags = data.data;
+    });
   },
   methods: {
-    handleSubmit (e) {
-      e.preventDefault()
+    handleSubmit(e) {
+      e.preventDefault();
       this.goodsForm.validateFields((err, values) => {
         if (!err) {
-          this.$emit('next', values)
+          this.$emit('next', values);
         }
-      })
+      });
     },
-    changeTags (value) {
+    changeTags(value) {
       this.goodsForm.setFieldsValue({
-        tags: value
-      })
-    }
-  }
-}
+        tags: value,
+      });
+    },
+  },
+};
 </script>

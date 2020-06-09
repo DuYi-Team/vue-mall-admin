@@ -16,21 +16,29 @@
         </div>
       </template>
     </a-table>
-    <a-modal v-model="tagsModel" :title="tagsMoadelTitle" centered @ok="submitTags">
+    <a-modal
+      v-model="tagsModel"
+      :title="tagsMoadelTitle"
+      centered
+      @ok="submit"
+    >
       <a-form
         :form="tagForm"
         :label-col="{ span: 5 }"
         :wrapper-col="{ span: 12 }"
-        @submit="submitTags"
+        @submit="submit"
       >
         <a-form-item label="标签ID">
-          <a-input :disabled="tagsMoadelTitle === '编辑标签'"
-            v-decorator="['id', { rules: [{ required: true, message: 'Please input your note!' }] }]"
+          <a-input
+            :disabled="tagsMoadelTitle === '编辑标签'"
+            v-decorator="['id',
+                          { rules: [{ required: true, message: 'Please input your note!' }] }]"
           />
         </a-form-item>
         <a-form-item label="标签名称">
           <a-input
-            v-decorator="['name', { rules: [{ required: true, message: 'Please input your note!' }] }]"
+            v-decorator="['name',
+                          { rules: [{ required: true, message: 'Please input your note!' }] }]"
           />
         </a-form-item>
       </a-form>
@@ -39,18 +47,20 @@
 </template>
 
 <script>
-import api from '@/api/tags'
+import api from '@/api/tags';
+
 export default {
-  data () {
+  data() {
     return {
       data: [],
       tagsModel: false,
+      isEdit: false,
       tagsMoadelTitle: '新增标签',
       tagForm: this.$form.createForm(this, { name: 'tagForm' }),
       pagination: {
         current: 1,
         pageSize: 10,
-        showSizeChanger: true
+        showSizeChanger: true,
       },
       loading: false,
       columns: [
@@ -58,119 +68,128 @@ export default {
           title: 'id',
           dataIndex: 'id',
           sorter: true,
-          width: '20%'
+          width: '20%',
         },
         {
           title: '名称',
-          dataIndex: 'name'
+          dataIndex: 'name',
         },
         {
           title: '操作',
-          scopedSlots: { customRender: 'operation' }
-        }
-      ]
-    }
+          scopedSlots: { customRender: 'operation' },
+        },
+      ],
+    };
   },
-  created () {
-    this.fetch()
+  created() {
+    this.fetch();
   },
   methods: {
-    handleTableChange (pagination, filters, sorter) {
-      const pager = { ...this.pagination }
-      pager.current = pagination.current
-      pager.pageSize = pagination.pageSize
-      this.pagination = pager
+    handleTableChange(pagination, filters, sorter) {
+      const pager = { ...this.pagination };
+      pager.current = pagination.current;
+      pager.pageSize = pagination.pageSize;
+      this.pagination = pager;
       this.fetch({
         results: pagination.pageSize,
         page: pagination.current,
         sortField: sorter.field,
         sortOrder: sorter.order,
-        ...filters
-      })
+        ...filters,
+      });
     },
-    fetch (params = {}) {
-      this.loading = true
+    fetch() {
+      this.loading = true;
       api
         .getTagsList({
           page: this.pagination.current || 1,
-          size: this.pagination.pageSize || 10
+          size: this.pagination.pageSize || 10,
         })
-        .then(res => {
-          const data = res.data
-          console.log(data)
-          if (data.status !== 'success') {
-            return this.$message.error(data.msg)
-          }
-          const pagination = { ...this.pagination }
-          pagination.total = data.data.total
-          this.loading = false
-          this.data = data.data.data
-          this.pagination = pagination
+        .then((data) => {
+          // console.log('tags: ', res);
+          // const { data } = res;
+          // if (data.status !== 'success') {
+          //   return this.$message.error(data.msg);
+          // }
+          const pagination = { ...this.pagination };
+          pagination.total = data.total;
+          this.data = data.data;
+          this.pagination = pagination;
+          return false;
         })
+        .finally(() => {
+          this.loading = false;
+        });
     },
-    submitTags () {
+    submit() {
       this.tagForm.validateFields((err, values) => {
-        if (!err) {
-          if (this.tagsMoadelTitle === '编辑标签') {
-            api.editTag(values).then(res => {
-              if (res.data.status === 'success') {
-                this.$message.success('修改成功')
-                this.fetch()
-                this.tagsModel = false
-              } else {
-                this.$message.error(res.data.msg)
-              }
-            })
-          } else {
-            api.addTag(values).then(res => {
-              if (res.data.status === 'success') {
-                this.$message.success('新增成功')
-                this.fetch()
-                this.tagsModel = false
-              } else {
-                this.$message.error(res.data.msg)
-              }
-            })
-          }
+        if (err) {
+          return false;
         }
-      })
+        if (this.isEdit) {
+          return this.editSubmit(values);
+        }
+        return this.addSubmit(values);
+      });
     },
-    editTag (row) {
-      for (const prop in row) {
-        const obj = {}
-        obj[prop] = row[prop]
-        this.tagForm.getFieldDecorator(prop)
-        this.tagForm.setFieldsValue(obj)
+    addSubmit(values) {
+      console.log('====');
+      api.addTag(values).then(() => {
+        this.$message.success('新增成功');
+        this.fetch();
+        this.tagsModel = false;
+      }).catch((err) => {
+        this.$message.error(err);
+      });
+    },
+    editSubmit(values) {
+      api.editTag(values).then(() => {
+        // if (res.data.status === 'success') {
+        this.$message.success('修改成功');
+        this.fetch();
+        this.tagsModel = false;
+      }).catch((err) => {
+        this.$message.error(err);
+      });
+    },
+    editTag(row) {
+      for (const [key, value] of Object.entries(row)) {
+        const obj = {};
+        obj[key] = value;
+        this.tagForm.getFieldDecorator(key);
+        this.tagForm.setFieldsValue(obj);
       }
-      this.tagsModel = true
-      this.tagsMoadelTitle = '编辑标签'
+      this.tagsModel = true;
+      this.isEdit = true;
+      this.tagsMoadelTitle = '编辑标签';
     },
-    addTag () {
-      this.tagForm = this.$form.createForm(this, { name: 'tagForm' })
-      this.tagsModel = true
-      this.tagsMoadelTitle = '新增标签'
+    addTag() {
+      this.tagForm = this.$form.createForm(this, { name: 'tagForm' });
+      this.tagsModel = true;
+      this.isEdit = false;
+      this.tagsMoadelTitle = '新增标签';
     },
-    deleteTag (record) {
-      api.deleteTag({
-        id: record.id
-      }).then(res => {
-        if (res.data.status === 'success') {
-          this.$message.success('删除成功')
-          this.fetch()
-        } else {
-          this.$message.error(res.data.msg)
-        }
-      })
-    }
-  }
-}
+    deleteTag(record) {
+      api
+        .deleteTag({
+          id: record.id,
+        })
+        .then(() => {
+          this.$message.success('删除成功');
+          this.fetch();
+        }).catch((err) => {
+          this.$message.error(err);
+        });
+    },
+  },
+};
 </script>
 
 <style scope>
-  .add-btn {
-    float: right;
-    margin: 10px;
-    position: relative;
-    z-index: 1;
-  }
+.add-btn {
+  float: right;
+  margin: 10px;
+  position: relative;
+  z-index: 1;
+}
 </style>

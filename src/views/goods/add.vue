@@ -10,85 +10,79 @@
   </div>
 </template>
 <script>
-import GoodsDetail from '@/components/goods/add/goodsDetail.vue'
-import GoodsSaleDetail from '@/components/goods/add/goodsSaleDetail.vue'
-import api from '@/api/products'
+import GoodsDetail from '@/components/goods/add/goodsDetail.vue';
+import GoodsSaleDetail from '@/components/goods/add/goodsSaleDetail.vue';
+import api from '@/api/products';
+
 export default {
-  data () {
+  data() {
     return {
       current: 0,
       form: {},
       goodsKey: 1,
       steps: [
         {
-          title: '填写商品基本信息'
+          title: '填写商品基本信息',
         },
         {
-          title: '填写商品销售信息'
-        }
-      ]
-    }
+          title: '填写商品销售信息',
+        },
+      ],
+    };
   },
   watch: {
-    $route () {
-      this.goodsKey = 1
-    }
+    $route() {
+      this.goodsKey = 1;
+    },
   },
   components: {
     GoodsDetail,
-    GoodsSaleDetail
+    GoodsSaleDetail,
   },
-  created () {
-    var params = this.$router.currentRoute.params
+  created() {
+    const { params } = this.$router.currentRoute;
     if (params && params.id) {
-      this.goodsKey = params.id
-      api.getProductDetail(params.id).then((res) => {
-        console.log(res.data)
-        this.form = res.data.data
-      })
+      this.goodsKey = params.id;
+      api.getProductDetail(params.id).then((data) => {
+        this.form = data;
+      }).catch((err) => {
+        this.$message.error(err);
+      });
     }
   },
   methods: {
-    next (data) {
-      this.current++
-      this.form = Object.assign(this.form, data)
+    next(data) {
+      this.current++;
+      this.form = Object.assign(this.form, data);
     },
-    prev () {
-      this.current--
+    prev() {
+      this.current--;
     },
-    submit (data) {
-      this.form = Object.assign(this.form, data)
-      var params = this.$router.currentRoute.params
+    submit(data) {
+      this.form = Object.assign(this.form, data);
+      const { params } = this.$router.currentRoute;
       if (params && params.id) {
-        api.editProduct(this.form).then((res) => {
-          if (res.data.status === 'success') {
-            this.$message.success('修改成功')
-            this.$router.push({
-              name: 'goodsList'
-            })
-          } else {
-            this.$message.error(res.data.errmsg)
-          }
+        api.editProduct(this.form).then(() => {
+          this.$message.success('修改成功');
+          this.$router.push({
+            name: 'goodsList',
+          });
         }).catch((error) => {
-          this.$message.error(error)
-        })
+          this.$message.error(error);
+        });
       } else {
-        api.addProduce(this.form).then((res) => {
-          if (res.data.status === 'success') {
-            this.$message.success('新增成功')
-            this.$router.push({
-              name: 'goodsList'
-            })
-          } else {
-            this.$message.error(res.data.errmsg)
-          }
+        api.addProduce(this.form).then(() => {
+          this.$message.success('新增成功');
+          this.$router.push({
+            name: 'goodsList',
+          });
         }).catch((error) => {
-          this.$message.error(error)
-        })
+          this.$message.error(error);
+        });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style lang="scss">
 @import "@/styles/goods/add.scss";

@@ -1,6 +1,6 @@
 
 export default {
-  getUserMenu (role) {
+  getUserMenu(role) {
     return {
       roles: ['test'],
       username: role,
@@ -12,7 +12,7 @@ export default {
           level: 0,
           name: 'goods',
           icon: 'inbox',
-          hidden: 0
+          hidden: 0,
         },
         {
           id: 2,
@@ -21,7 +21,7 @@ export default {
           level: 1,
           name: 'goodsList',
           icon: 'unordered-list',
-          hidden: 0
+          hidden: 0,
         },
         {
           id: 3,
@@ -30,7 +30,7 @@ export default {
           level: 1,
           name: 'goodsAdd',
           icon: 'file-add',
-          hidden: 0
+          hidden: 0,
         }, {
           id: 4,
           parentId: 1,
@@ -38,7 +38,7 @@ export default {
           level: 1,
           name: 'goodsTags',
           icon: 'tags',
-          hidden: 0
+          hidden: 0,
         }, {
           id: 5,
           parentId: 1,
@@ -46,9 +46,9 @@ export default {
           level: 1,
           name: 'goodsEdit',
           icon: 'file-edit',
-          hidden: 1
-        }
-      ]
-    }
-  }
-}
+          hidden: 1,
+        },
+      ],
+    };
+  },
+};

@@ -24,10 +24,6 @@
             :value="option.id"
           >{{option.label}}</a-select-option>
         </a-select>
-        <!-- <a-select v-else style="min-width: 200px" v-model="field.value" placeholder="please select your zone">
-          <a-select-option value="shanghai">Zone one</a-select-option>
-          <a-select-option value="beijing">Zone two</a-select-option>
-        </a-select> -->
       </a-form-model-item>
       <a-form-model-item>
         <a-button type="primary" @click="submit">搜索</a-button>
@@ -37,24 +33,24 @@
 </template>
 <script>
 export default {
-  data () {
-    return {}
+  data() {
+    return {};
   },
   // {}
   props: ['form'],
   computed: {
-    formData () {
-      return Object.assign({}, this.form)
-    }
+    formData() {
+      return { ...this.form };
+    },
   },
   methods: {
-    submit () {
-      const resultData = {}
+    submit() {
+      const resultData = {};
       for (const prop in this.formData) {
-        resultData[prop] = this.formData[prop].value
+        resultData[prop] = this.formData[prop].value;
       }
-      this.$emit('search', resultData)
-    }
-  }
-}
+      this.$emit('search', resultData);
+    },
+  },
+};
 </script>

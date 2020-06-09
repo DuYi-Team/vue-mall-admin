@@ -11,26 +11,27 @@
 </template>
 
 <script>
-import sliderNav from './components/sliderNav/index.vue'
-import NavBar from './components/appMain/navBar.vue'
+import sliderNav from './components/sliderNav/index.vue';
+import NavBar from './components/appMain/navBar.vue';
+
 export default {
-  data () {
+  data() {
     return {
-      sliderKey: 1
-    }
+      sliderKey: 1,
+    };
   },
   computed: {
   },
   watch: {
-    $route () {
-      this.sliderKey++
-    }
+    $route() {
+      this.sliderKey += 1;
+    },
   },
   components: {
     sliderNav,
-    NavBar
-  }
-}
+    NavBar,
+  },
+};
 </script>
 <style lang="sass" >
 @import '@/styles/layout/index.scss';
