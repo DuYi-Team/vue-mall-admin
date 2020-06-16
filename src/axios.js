@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'http://mallapi.duyiedu.com:3333/',
+  baseURL: 'https://mallapi.duyiedu.com:3333/',
 });
 // http response 拦截器
 instance.interceptors.response.use(
