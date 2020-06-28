@@ -1,7 +1,47 @@
 
 export default {
   getUserMenu(role) {
-    return {
+    return Math.random() > 0.5 ? {
+      roles: ['test'],
+      username: role,
+      menus: [
+        {
+          id: 1,
+          parentId: 0,
+          title: '商品',
+          level: 0,
+          name: 'goods',
+          icon: 'inbox',
+          hidden: 0,
+        },
+        {
+          id: 2,
+          parentId: 1,
+          title: '商品列表',
+          level: 1,
+          name: 'goodsList',
+          icon: 'unordered-list',
+          hidden: 0,
+        },
+        {
+          id: 3,
+          parentId: 1,
+          title: '添加商品',
+          level: 1,
+          name: 'goodsAdd',
+          icon: 'file-add',
+          hidden: 0,
+        }, {
+          id: 5,
+          parentId: 1,
+          title: '编辑商品',
+          level: 1,
+          name: 'goodsEdit',
+          icon: 'file-edit',
+          hidden: 1,
+        },
+      ],
+    } : {
       roles: ['test'],
       username: role,
       menus: [
