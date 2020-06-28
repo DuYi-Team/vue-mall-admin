@@ -67,14 +67,14 @@ export const asyncRouterMap = [
       },
       component: () => import('@/views/goods/add.vue'),
     }, {
-      path: 'tags',
-      name: 'goodsTags',
+      path: 'category',
+      name: 'goodsCategory',
       meta: {
-        title: '标签管理',
-        icon: 'tags',
+        title: '商品类别管理',
+        icon: 'category',
         isPage: false,
       },
-      component: () => import('@/views/goods/tags.vue'),
+      component: () => import('@/views/goods/category.vue'),
     }, {
       path: 'edit/:id',
       name: 'goodsEdit',

@@ -18,9 +18,22 @@
       <a-form-item label="商品货号">
         <a-input v-decorator="['number', { rules: [{ required: true, message: '请输入商品货号' }] }]" />
       </a-form-item>
-      <a-form-item label="商品标签">
+      <a-form-item label="商品类目">
         <a-select
-          mode="multiple"
+          v-decorator="[
+          'category',
+          {rules: [{ required: true, message: '请选择商品所属商品类目', type: 'number'}] },
+        ]"
+          placeholder="选择类目"
+        >
+          <a-select-option v-for="c in category" :key="c.id" :value="c.id">
+            {{c.name}}
+          </a-select-option>
+        </a-select>
+      </a-form-item>
+       <a-form-item label="商品标签">
+        <a-select
+          mode="tags"
           v-decorator="[
           'tags',
           {rules: [{ required: true, message: '请选择商品所属标签', type: 'array'}] },
@@ -28,8 +41,8 @@
           placeholder="选择标签"
           @change="changeTags"
         >
-          <a-select-option v-for="tag in tags" :key="tag.id" :value="tag.id">
-            {{tag.name}}
+          <a-select-option v-for="(tag, index) in tags" :key="index" :value="tag">
+            {{tag}}
           </a-select-option>
         </a-select>
       </a-form-item>
@@ -40,12 +53,13 @@
   </div>
 </template>
 <script>
-import tagsApi from '@/api/tags';
+import categoryApi from '@/api/category';
 
 export default {
   data() {
     return {
-      tags: [],
+      tags: ['包邮，最晚次日达'],
+      category: [],
       formLayout: 'horizontal',
       goodsForm: this.$form.createForm(this, { name: 'goodsDetails' }),
     };
@@ -64,8 +78,8 @@ export default {
     },
   },
   created() {
-    tagsApi.getTagsList().then((data) => {
-      this.tags = data.data;
+    categoryApi.getCategoryList().then((data) => {
+      this.category = data.data;
     });
   },
   methods: {

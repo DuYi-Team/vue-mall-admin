@@ -9,6 +9,9 @@
       <a-form-item label="商品售价">
         <a-input v-decorator="['price', { rules: [{ required: true, message: ''}] }]" />
       </a-form-item>
+      <a-form-item label="商品折扣价">
+        <a-input v-decorator="['price_off', { rules: [{ required: true, message: ''}] }]" />
+      </a-form-item>
       <a-form-item label="商品库存">
         <a-input v-decorator="['inventory', { rules: [{ required: true, message: ''}] }]" />
       </a-form-item>
@@ -21,7 +24,7 @@
           listType="picture-card"
           class="avatar-uploader"
           :file-list="fileList"
-          action="http://mallapi.duyiedu.com/upload/images"
+          action="https://mallapi.duyiedu.com/upload/images"
           @preview="handlePreview"
           @change="handleChange"
           v-decorator="['images', { rules: [{ required: true, message: '' }] }]"
@@ -39,6 +42,11 @@
           <img alt="example" :src="previewImage" style="margin: 20px"/>
         </a-modal>
       </a-form-item>
+       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+        <a-checkbox :checked="isPutaway" @change="handleStatusChange">
+          是否上架
+        </a-checkbox>
+    </a-form-item>
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button type="default" @click="prev">上一页</a-button>
         <a-button type="primary" html-type="submit">完成</a-button>
@@ -62,6 +70,17 @@ export default {
       previewImage: '',
       goodsForm: this.$form.createForm(this, { name: 'goodsSaleDetails' }),
     };
+  },
+  computed: {
+    isPutaway: {
+      get() {
+        return this.form.status === 1;
+      },
+      set(val) {
+        this.form.status = Number(val);
+      },
+
+    },
   },
   props: [
     'form',
@@ -110,6 +129,9 @@ export default {
       this.goodsForm.setFieldsValue({
         tags: value,
       });
+    },
+    handleStatusChange(e) {
+      this.isPutaway = e.target.checked;
     },
     prev() {
       this.$emit('prev');

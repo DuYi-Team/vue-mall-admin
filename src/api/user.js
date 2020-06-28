@@ -34,10 +34,10 @@ export default {
         }, {
           id: 4,
           parentId: 1,
-          title: '标签管理',
+          title: '商品类目管理',
           level: 1,
-          name: 'goodsTags',
-          icon: 'tags',
+          name: 'goodsCategory',
+          icon: 'category',
           hidden: 0,
         }, {
           id: 5,

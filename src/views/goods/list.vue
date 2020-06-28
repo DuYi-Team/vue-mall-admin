@@ -28,7 +28,7 @@
 </template>
 <script>
 import api from '@/api/products';
-import tagsApi from '@/api/tags';
+import categoryApi from '@/api/category';
 import selectForm from '@/components/public/select.vue';
 
 export default {
@@ -42,9 +42,9 @@ export default {
           type: 'input',
           options: [],
         },
-        tags: {
-          label: '商品标签',
-          name: 'tags',
+        category: {
+          label: '商品类目',
+          name: 'category',
           value: undefined,
           type: 'select',
           options: [],
@@ -61,7 +61,7 @@ export default {
         {
           title: 'id',
           dataIndex: 'id',
-          sorter: true,
+          // sorter: true,
         },
         {
           title: '标题',
@@ -72,11 +72,17 @@ export default {
           title: '描述',
           dataIndex: 'desc',
         }, {
-          title: '标签',
-          dataIndex: 'tagsName',
+          title: '类目',
+          dataIndex: 'categoryName',
         }, {
-          title: '价格',
+          title: '预售价格',
           dataIndex: 'price',
+        }, {
+          title: '折扣价格',
+          dataIndex: 'price_off',
+        }, {
+          title: '标签',
+          dataIndex: 'tags',
         }, {
           title: '限制购买数量',
           dataIndex: 'inventory',
@@ -96,8 +102,8 @@ export default {
     selectForm,
   },
   async created() {
-    tagsApi.getTagsList().then((data) => {
-      this.selectionForm.tags.options = data.data.map((item) => ({
+    categoryApi.getCategoryList().then((data) => {
+      this.selectionForm.category.options = data.data.map((item) => ({
         ...item,
         label: item.name,
       }));
@@ -106,7 +112,6 @@ export default {
   },
   methods: {
     handleTableChange(pagination, filters) {
-      console.log(filters);
       const pager = { ...this.pagination };
       pager.current = pagination.current;
       pager.pageSize = pagination.pageSize;
@@ -118,7 +123,6 @@ export default {
       });
     },
     search() {
-      console.log(this.selectionForm.searchWord.value, this.selectionForm.tags.value);
       this.fetch();
     },
     fetch() {
@@ -127,20 +131,20 @@ export default {
         page: this.pagination.current || 1,
         size: this.pagination.pageSize || 10,
         searchWord: this.selectionForm.searchWord.value,
-        tags: this.selectionForm.tags.value,
+        category: this.selectionForm.category.value,
       }).then((data) => {
-        console.log(data);
         const pagination = { ...this.pagination };
         pagination.total = parseInt(data.total);
-        const tags = this.selectionForm.tags.options;
+        const category = this.selectionForm.category.options;
+        // this.data = data.data;
         this.data = data.data.map((item) => {
-          const tagsName = [];
-          tags.forEach((tag) => {
-            if (item.tags.indexOf(tag.id) > -1) {
-              tagsName.push(tag.name);
+          let categoryName = '';
+          category.forEach((c) => {
+            if (c.id === item.category) {
+              categoryName = c.name;
             }
           });
-          item.tagsName = tagsName.join();
+          item.categoryName = categoryName;
           return item;
         });
         this.pagination = pagination;

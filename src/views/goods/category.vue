@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-tags">
-    <a-button @click="addTag()" class="add-btn">新增</a-button>
+  <div class="goods-category">
+    <a-button @click="addCategory()" class="add-btn">新增</a-button>
     <a-table
       :columns="columns"
       :row-key="record => record.id"
@@ -11,26 +11,26 @@
     >
       <template slot="operation" slot-scope="record">
         <div>
-          <a-button @click="editTag(record)">编辑</a-button>
-          <a-button @click="deleteTag(record)">删除</a-button>
+          <a-button @click="editCategory(record)">编辑</a-button>
+          <a-button @click="deleteCategory(record)">删除</a-button>
         </div>
       </template>
     </a-table>
     <a-modal
-      v-model="tagsModel"
-      :title="tagsMoadelTitle"
+      v-model="categoryModel"
+      :title="categoryMoadelTitle"
       centered
       @ok="submit"
     >
       <a-form
-        :form="tagForm"
+        :form="categoryForm"
         :label-col="{ span: 5 }"
         :wrapper-col="{ span: 12 }"
         @submit="submit"
       >
         <a-form-item label="标签ID">
           <a-input
-            :disabled="tagsMoadelTitle === '编辑标签'"
+            :disabled="categoryMoadelTitle === '编辑标签'"
             v-decorator="['id',
                           { rules: [{ required: true, message: 'Please input your note!' }] }]"
           />
@@ -47,16 +47,16 @@
 </template>
 
 <script>
-import api from '@/api/tags';
+import api from '@/api/category';
 
 export default {
   data() {
     return {
       data: [],
-      tagsModel: false,
+      categoryModel: false,
       isEdit: false,
-      tagsMoadelTitle: '新增标签',
-      tagForm: this.$form.createForm(this, { name: 'tagForm' }),
+      categoryMoadelTitle: '新增标签',
+      categoryForm: this.$form.createForm(this, { name: 'categoryForm' }),
       pagination: {
         current: 1,
         pageSize: 10,
@@ -67,7 +67,7 @@ export default {
         {
           title: 'id',
           dataIndex: 'id',
-          sorter: true,
+          // sorter: true,
           width: '20%',
         },
         {
@@ -101,12 +101,11 @@ export default {
     fetch() {
       this.loading = true;
       api
-        .getTagsList({
+        .getCategoryList({
           page: this.pagination.current || 1,
           size: this.pagination.pageSize || 10,
         })
         .then((data) => {
-          // console.log('tags: ', res);
           // const { data } = res;
           // if (data.status !== 'success') {
           //   return this.$message.error(data.msg);
@@ -122,7 +121,7 @@ export default {
         });
     },
     submit() {
-      this.tagForm.validateFields((err, values) => {
+      this.categoryForm.validateFields((err, values) => {
         if (err) {
           return false;
         }
@@ -133,45 +132,44 @@ export default {
       });
     },
     addSubmit(values) {
-      console.log('====');
-      api.addTag(values).then(() => {
+      api.addCategory(values).then(() => {
         this.$message.success('新增成功');
         this.fetch();
-        this.tagsModel = false;
+        this.categoryModel = false;
       }).catch((err) => {
         this.$message.error(err);
       });
     },
     editSubmit(values) {
-      api.editTag(values).then(() => {
+      api.editCategory(values).then(() => {
         // if (res.data.status === 'success') {
         this.$message.success('修改成功');
         this.fetch();
-        this.tagsModel = false;
+        this.categoryModel = false;
       }).catch((err) => {
         this.$message.error(err);
       });
     },
-    editTag(row) {
+    editCategory(row) {
       for (const [key, value] of Object.entries(row)) {
         const obj = {};
         obj[key] = value;
-        this.tagForm.getFieldDecorator(key);
-        this.tagForm.setFieldsValue(obj);
+        this.categoryForm.getFieldDecorator(key);
+        this.categoryForm.setFieldsValue(obj);
       }
-      this.tagsModel = true;
+      this.categoryModel = true;
       this.isEdit = true;
-      this.tagsMoadelTitle = '编辑标签';
+      this.categoryMoadelTitle = '编辑标签';
     },
-    addTag() {
-      this.tagForm = this.$form.createForm(this, { name: 'tagForm' });
-      this.tagsModel = true;
+    addCategory() {
+      this.categoryForm = this.$form.createForm(this, { name: 'categoryForm' });
+      this.categoryModel = true;
       this.isEdit = false;
-      this.tagsMoadelTitle = '新增标签';
+      this.categoryMoadelTitle = '新增标签';
     },
-    deleteTag(record) {
+    deleteCategory(record) {
       api
-        .deleteTag({
+        .deleteCategory({
           id: record.id,
         })
         .then(() => {
