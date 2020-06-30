@@ -25,9 +25,21 @@
           {rules: [{ required: true, message: '请选择商品所属商品类目', type: 'number'}] },
         ]"
           placeholder="选择类目"
+          @change="changeCategory"
         >
           <a-select-option v-for="c in category" :key="c.id" :value="c.id">
             {{c.name}}
+          </a-select-option>
+        </a-select>
+        <a-select
+          v-decorator="[
+          'c_item',
+          {rules: [{ required: true, message: '请选择商品所属商品子类目', type: 'string'}] },
+        ]"
+          placeholder="选择所属子类目"
+        >
+          <a-select-option v-for="item in c_items" :key="item" :value="item">
+            {{item}}
           </a-select-option>
         </a-select>
       </a-form-item>
@@ -59,6 +71,7 @@ export default {
   data() {
     return {
       tags: ['包邮，最晚次日达'],
+      c_items: [],
       category: [],
       formLayout: 'horizontal',
       goodsForm: this.$form.createForm(this, { name: 'goodsDetails' }),
@@ -74,6 +87,9 @@ export default {
         obj[key] = value;
         this.goodsForm.getFieldDecorator(key, {});
         this.goodsForm.setFieldsValue(obj);
+        if (key === 'category') {
+          this.changeCategory(value);
+        }
       }
     },
   },
@@ -94,6 +110,13 @@ export default {
     changeTags(value) {
       this.goodsForm.setFieldsValue({
         tags: value,
+      });
+    },
+    changeCategory(categoryId) {
+      this.category.forEach((c) => {
+        if (c.id === categoryId) {
+          this.c_items = c.c_items;
+        }
       });
     },
   },

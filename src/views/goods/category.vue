@@ -16,12 +16,7 @@
         </div>
       </template>
     </a-table>
-    <a-modal
-      v-model="categoryModel"
-      :title="categoryMoadelTitle"
-      centered
-      @ok="submit"
-    >
+    <a-modal v-model="categoryModel" :title="categoryMoadelTitle" centered @ok="submit">
       <a-form
         :form="categoryForm"
         :label-col="{ span: 5 }"
@@ -40,6 +35,14 @@
             v-decorator="['name',
                           { rules: [{ required: true, message: 'Please input your note!' }] }]"
           />
+        </a-form-item>
+        <a-form-item label="所属子类别">
+          <a-select mode="tags"  placeholder="items Mode"
+                  v-decorator="['c_items', {
+                    rules: [{ required: true, message: 'Please input your tags', type: 'array' }]
+                  }]">
+
+          </a-select>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -132,23 +135,29 @@ export default {
       });
     },
     addSubmit(values) {
-      api.addCategory(values).then(() => {
-        this.$message.success('新增成功');
-        this.fetch();
-        this.categoryModel = false;
-      }).catch((err) => {
-        this.$message.error(err);
-      });
+      api
+        .addCategory(values)
+        .then(() => {
+          this.$message.success('新增成功');
+          this.fetch();
+          this.categoryModel = false;
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
     },
     editSubmit(values) {
-      api.editCategory(values).then(() => {
-        // if (res.data.status === 'success') {
-        this.$message.success('修改成功');
-        this.fetch();
-        this.categoryModel = false;
-      }).catch((err) => {
-        this.$message.error(err);
-      });
+      api
+        .editCategory(values)
+        .then(() => {
+          // if (res.data.status === 'success') {
+          this.$message.success('修改成功');
+          this.fetch();
+          this.categoryModel = false;
+        })
+        .catch((err) => {
+          this.$message.error(err);
+        });
     },
     editCategory(row) {
       for (const [key, value] of Object.entries(row)) {
@@ -175,7 +184,8 @@ export default {
         .then(() => {
           this.$message.success('删除成功');
           this.fetch();
-        }).catch((err) => {
+        })
+        .catch((err) => {
           this.$message.error(err);
         });
     },

@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: 'https://mallapi.duyiedu.com/',
+  baseURL: 'http://localhost:3333/',
+  // baseURL: 'https://mallapi.duyiedu.com/',
 });
 // http response 拦截器
 instance.interceptors.response.use(

@@ -18,7 +18,9 @@ export default {
   data() {
     return {
       current: 0,
-      form: {},
+      form: {
+        status: 1,
+      },
       goodsKey: 1,
       steps: [
         {
