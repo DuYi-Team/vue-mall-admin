@@ -1,9 +1,19 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  // baseURL: 'http://localhost:3333/',
-  baseURL: 'https://mallapi.duyiedu.com/',
+  baseURL: 'http://localhost:3333/',
+  // baseURL: 'https://mallapi.duyiedu.com/',
 });
+
+// 添加请求拦截器
+instance.interceptors.request.use((config) => {
+  // 在发送请求之前做些什么
+  config.params = {
+    ...config.params,
+    appkey: 'aaaaaa_1594281230876',
+  };
+  return config;
+}, (error) => Promise.reject(error));
 // http response 拦截器
 instance.interceptors.response.use(
   (response) => {

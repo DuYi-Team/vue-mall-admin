@@ -4,8 +4,8 @@
       <a-step v-for="item in steps" :key="item.title" :title="item.title" />
     </a-steps>
     <div class="steps-content">
-      <goods-detail v-show="current == 0" :form="form" @next="next"/>
-      <goods-sale-detail v-show="current == 1" :form="form" @submit="submit" @prev="prev"/>
+      <goods-detail v-if="current == 0" :form="form" @next="next"/>
+      <goods-sale-detail v-else-if="current == 1" :form="form" @submit="submit" @prev="prev"/>
     </div>
   </div>
 </template>

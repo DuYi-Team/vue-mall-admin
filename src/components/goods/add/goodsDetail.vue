@@ -1,29 +1,22 @@
 <template>
   <div class="goods-detail">
-    <a-form
-      :form="goodsForm"
+    <a-form-model
+      ref="ruleForm"
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 12 }"
       @submit="handleSubmit"
+      :model="goodsForm"
+      :rules="rules"
     >
-      <a-form-item label="商品名称">
-        <a-input v-decorator="['name', { rules: [{ required: true, message: '请输入商品名称' }] }]" />
-      </a-form-item>
-      <a-form-item label="副标题">
-        <a-input v-decorator="['title', { rules: [{ required: true, message: '请输入商品副标题' }] }]" />
-      </a-form-item>
-      <a-form-item label="商品描述">
-        <a-textarea v-decorator="['desc']" :autoSize="{ minRows: 2, maxRows: 6 }" />
-      </a-form-item>
-      <a-form-item label="商品货号">
-        <a-input v-decorator="['number', { rules: [{ required: true, message: '请输入商品货号' }] }]" />
-      </a-form-item>
-      <a-form-item label="商品类目">
+      <a-form-model-item prop="title" label="副标题">
+        <a-input v-model="goodsForm.title"/>
+      </a-form-model-item>
+      <a-form-model-item label="商品描述" prop="desc">
+        <a-textarea v-model="goodsForm.desc" :autoSize="{ minRows: 2, maxRows: 6 }" />
+      </a-form-model-item>
+      <a-form-model-item label="商品类目" >
         <a-select
-          v-decorator="[
-          'category',
-          {rules: [{ required: true, message: '请选择商品所属商品类目', type: 'number'}] },
-        ]"
+          v-model="goodsForm.category"
           placeholder="选择类目"
           @change="changeCategory"
         >
@@ -32,24 +25,18 @@
           </a-select-option>
         </a-select>
         <a-select
-          v-decorator="[
-          'c_item',
-          {rules: [{ required: true, message: '请选择商品所属商品子类目', type: 'string'}] },
-        ]"
+          v-model="goodsForm.c_item"
           placeholder="选择所属子类目"
         >
           <a-select-option v-for="item in c_items" :key="item" :value="item">
             {{item}}
           </a-select-option>
         </a-select>
-      </a-form-item>
-       <a-form-item label="商品标签">
+      </a-form-model-item>
+       <a-form-model-item label="商品标签" prop="tags">
         <a-select
           mode="tags"
-          v-decorator="[
-          'tags',
-          {rules: [{ required: true, message: '请选择商品所属标签', type: 'array'}] },
-        ]"
+        v-model="goodsForm.tags"
           placeholder="选择标签"
           @change="changeTags"
         >
@@ -57,11 +44,11 @@
             {{tag}}
           </a-select-option>
         </a-select>
-      </a-form-item>
-      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+      </a-form-model-item>
+      <a-form-model-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button type="primary" html-type="submit">下一步</a-button>
-      </a-form-item>
-    </a-form>
+      </a-form-model-item>
+    </a-form-model>
   </div>
 </template>
 <script>
@@ -73,8 +60,19 @@ export default {
       tags: ['包邮，最晚次日达'],
       c_items: [],
       category: [],
+      rules: {
+        title: [{ required: true, message: '请输入商品副标题' }],
+        category: [{ required: true, message: '请选择商品所属商品类目', type: 'number' }],
+        tags: [{ required: true, message: '请选择商品所属标签', type: 'array' }],
+      },
       formLayout: 'horizontal',
-      goodsForm: this.$form.createForm(this, { name: 'goodsDetails' }),
+      goodsForm: {
+        title: '',
+        desc: '',
+        category: null,
+        tags: [],
+        c_items: [],
+      },
     };
   },
   props: [
@@ -82,35 +80,28 @@ export default {
   ],
   watch: {
     form() {
-      for (const [key, value] of Object.entries(this.form)) {
-        const obj = {};
-        obj[key] = value;
-        this.goodsForm.getFieldDecorator(key, {});
-        this.goodsForm.setFieldsValue(obj);
-        if (key === 'category') {
-          this.changeCategory(value);
-        }
-      }
+      this.goodsForm = this.form;
     },
   },
-  created() {
-    categoryApi.getCategoryList().then((data) => {
+  async created() {
+    await categoryApi.getCategoryList().then((data) => {
       this.category = data.data;
     });
   },
   methods: {
     handleSubmit(e) {
       e.preventDefault();
-      this.goodsForm.validateFields((err, values) => {
-        if (!err) {
-          this.$emit('next', values);
+      this.$refs.ruleForm.validate((valid) => {
+        console.log(valid);
+        if (valid) {
+          return this.$emit('next', this.goodsForm);
         }
+        console.log('error submit!!');
+        return false;
       });
     },
-    changeTags(value) {
-      this.goodsForm.setFieldsValue({
-        tags: value,
-      });
+    changeTags() {
+
     },
     changeCategory(categoryId) {
       this.category.forEach((c) => {

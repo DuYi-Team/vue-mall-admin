@@ -5,7 +5,7 @@
       <a-button  class="goods-add-btn" @click="addGoods">新增商品</a-button>
     <a-table
       :columns="columns"
-      :row-key="record => record.id"
+      :row-key="record => record._id"
       :data-source="data"
       :pagination="pagination"
       :loading="loading"
@@ -158,6 +158,7 @@ export default {
       });
     },
     editGoods(row) {
+      console.log(row);
       this.$router.push({
         path: `/goods/edit/${row.id}`,
       });

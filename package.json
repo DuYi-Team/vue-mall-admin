@@ -73,7 +73,8 @@
       "no-param-reassign": 0,
       "no-console": 0,
       "guard-for-in": 0,
-      "radix": 1
+      "radix": 1,
+      "no-underscore-dangle": 0
     },
     "overrides": [
       {
