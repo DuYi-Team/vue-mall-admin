@@ -26,7 +26,7 @@
           listType="picture-card"
           class="avatar-uploader"
           :file-list="fileList"
-          action="https://mallapi.duyiedu.com/upload/images"
+          action="https://mallapi.duyiedu.com/upload/images?appkey=qqqqqq_1594362822817"
           @preview="handlePreview"
           @change="handleChange"
           v-model="goodsForm.images"

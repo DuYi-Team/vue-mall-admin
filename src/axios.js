@@ -10,13 +10,14 @@ instance.interceptors.request.use((config) => {
   // 在发送请求之前做些什么
   config.params = {
     ...config.params,
-    appkey: 'dongmeqi_1594360481601',
+    appkey: 'qqqqqq_1594362822817',
   };
   return config;
 }, (error) => Promise.reject(error));
 // http response 拦截器
 instance.interceptors.response.use(
   (response) => {
+    console.log(response);
     // 拦截响应，做统一处理
     if (response.status !== 200) {
       return response.statusText;
