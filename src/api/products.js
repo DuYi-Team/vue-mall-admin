@@ -20,4 +20,7 @@ export default {
     const { id } = params;
     return instance.delete(`/products/${id}`);
   },
+  uploadImages(params) {
+    return instance.post('/upload/images', params);
+  },
 };

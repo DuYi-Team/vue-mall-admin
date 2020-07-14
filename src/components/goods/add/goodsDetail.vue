@@ -78,15 +78,14 @@ export default {
   props: [
     'form',
   ],
-  watch: {
-    form() {
-      this.goodsForm = this.form;
-    },
-  },
   async created() {
     await categoryApi.getCategoryList().then((data) => {
       this.category = data.data;
     });
+    console.log('created');
+    this.goodsForm = {
+      ...this.form,
+    };
   },
   methods: {
     handleSubmit(e) {

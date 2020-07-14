@@ -57,14 +57,20 @@ export default {
       this.current++;
       this.form = Object.assign(this.form, data);
     },
-    prev() {
+    prev(data) {
+      this.form = Object.assign(this.form, data);
+      console.log(this.form);
       this.current--;
     },
     submit(data) {
       this.form = Object.assign(this.form, data);
       const { params } = this.$router.currentRoute;
+      const form = {
+        ...this.form,
+        images: this.form.images.map((item) => item.url),
+      };
       if (params && params.id) {
-        api.editProduct(this.form).then(() => {
+        api.editProduct(form).then(() => {
           this.$message.success('修改成功');
           this.$router.push({
             name: 'goodsList',
@@ -73,7 +79,7 @@ export default {
           this.$message.error(error);
         });
       } else {
-        api.addProduce(this.form).then(() => {
+        api.addProduce(form).then(() => {
           this.$message.success('新增成功');
           this.$router.push({
             name: 'goodsList',

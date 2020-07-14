@@ -29,6 +29,7 @@
           action="https://mallapi.duyiedu.com/upload/images?appkey=qqqqqq_1594362822817"
           @preview="handlePreview"
           @change="handleChange"
+          :remove="removeImage"
           v-model="goodsForm.images"
         >
           <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
@@ -91,10 +92,17 @@ export default {
     },
   },
   props: ['form'],
-  watch: {
-    form() {
-      this.goodsForm = this.form;
-    },
+  created() {
+    this.goodsForm = {
+      ...this.form,
+    };
+    console.log(this.form);
+    this.fileList = this.form.images.map((item, index) => ({
+      url: item,
+      uid: index,
+      name: item,
+      status: 'done',
+    }));
   },
   methods: {
     handleChange({ file, fileList }) {
@@ -105,15 +113,10 @@ export default {
         this.$message.success('上传成功');
         file.url = file.response.data.url;
         file.thumbUrl = file.response.data.thumbUrl;
+        this.goodsForm.images.push(file.url);
+      } else {
         this.fileList = fileList;
       }
-      this.fileList = fileList;
-      this.goodsForm.images = this.fileList.map((item, index) => ({
-        url: item.response ? item.response.data.url : item.url,
-        uid: index,
-        name: item.name,
-        status: item.response ? item.response.data.status : 'done',
-      }));
     },
     handleSubmit(e) {
       e.preventDefault();
@@ -141,7 +144,7 @@ export default {
       this.isPutaway = e.target.checked;
     },
     prev() {
-      this.$emit('prev');
+      this.$emit('prev', this.goodsForm);
     },
     async handlePreview(file) {
       if (!file.url && !file.preview) {
@@ -149,6 +152,9 @@ export default {
       }
       this.previewImage = file.url || file.preview;
       this.previewVisible = true;
+    },
+    removeImage(file) {
+      console.log(file);
     },
     handleCancel() {
       this.previewVisible = false;
