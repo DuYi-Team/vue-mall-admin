@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '@/views/login/index.vue';
+import Register from '@/views/register/index.vue';
 import Layout from '../views/layout/index.vue';
 import GoodsList from '../views/goods/list.vue';
 import Home from '../views/home/index.vue';
@@ -10,6 +11,13 @@ export const commonRouterMap = [
   {
     path: '/login',
     component: Login,
+    hidden: true,
+    name: 'login',
+  },
+  {
+    path: '/register',
+    component: Register,
+    name: 'register',
     hidden: true,
   },
   {
